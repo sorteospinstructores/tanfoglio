@@ -1,1177 +1,331 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Sorteo Sp Instructores : Tanfoglio Combat</title>
-  <meta name="theme-color" content="#06090b" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Sorteo Sp Instructores : Tanfoglio Combat</title>
 
-  <style>
-    :root{
-      --bg:#06090b;
-      --bg2:#0b1014;
-      --panel:#0c1216;
-      --panel2:#081015;
-      --text:#e6f0f2;
-      --muted:#9bb0b5;
-      --line:rgba(255,255,255,.10);
+<style>
+:root{
+  --bg:#050709;
+  --panel:#0c1216;
+  --text:#e6f0f2;
+  --muted:#8fa3a8;
 
-      --ok:#22e39a;      /* disponible */
-      --warn:#ffb84d;    /* reservado */
-      --bad:#ff3b3b;     /* vendido */
+  --green:#00ff84;
+  --amber:#ffb84d;
+  --red:#ff3b3b;
+}
 
-      --nvg:#00ff84;
-      --amber:#ffb84d;
-      --red:#ff3b3b;
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui,Segoe UI,Roboto;
+  background:
+    radial-gradient(900px 500px at 20% 0%, rgba(0,255,132,.08), transparent 60%),
+    radial-gradient(800px 400px at 100% 20%, rgba(255,59,59,.05), transparent 60%),
+    var(--bg);
+  color:var(--text);
+}
 
-      --shadow: 0 18px 55px rgba(0,0,0,.65);
-      --radius: 16px;
-    }
+.wrap{
+  max-width:1200px;
+  margin:auto;
+  padding:20px;
+}
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
+/* ================= HEADER ================= */
 
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      color:var(--text);
-      background:
-        radial-gradient(1200px 700px at 20% 0%, rgba(0,255,132,.10), transparent 55%),
-        radial-gradient(900px 600px at 100% 20%, rgba(255,184,77,.07), transparent 55%),
-        radial-gradient(900px 600px at 10% 120%, rgba(255,59,59,.06), transparent 60%),
-        linear-gradient(180deg, #030405, var(--bg));
-      overflow-x:hidden;
-    }
+.header{
+  display:flex;
+  gap:20px;
+  flex-wrap:wrap;
+  background:var(--panel);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;
+  padding:20px;
+}
 
-    /* gritty metal + noise */
-    body:before{
-      content:"";
-      position:fixed; inset:0;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,.02), transparent 25%, rgba(0,0,0,.35)),
-        repeating-linear-gradient(90deg, rgba(255,255,255,.02) 0 1px, transparent 1px 3px),
-        radial-gradient(2px 2px at 20% 40%, rgba(255,255,255,.06), transparent 60%),
-        radial-gradient(2px 2px at 80% 20%, rgba(255,255,255,.05), transparent 60%),
-        radial-gradient(2px 2px at 60% 70%, rgba(255,255,255,.05), transparent 60%);
-      opacity:.55;
-      pointer-events:none;
-      mix-blend-mode: overlay;
-      filter: contrast(115%) saturate(105%);
-    }
+.headerText{
+  flex:1 1 500px;
+}
 
-    .wrap{
-      width:min(1100px, 100%);
-      margin:0 auto;
-      padding: clamp(14px, 3vw, 26px);
-      padding-bottom: 90px;
-      position:relative;
-      z-index:1;
-    }
+h1{
+  margin:0;
+  font-size:28px;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+}
 
-    /* ======= Top layout ======= */
-    .topbar{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:14px;
-      margin-top: env(safe-area-inset-top);
-    }
-    @media (min-width: 900px){
-      .topbar{ grid-template-columns: 1.35fr .65fr; align-items:stretch; }
-    }
+.subtitle{
+  margin-top:8px;
+  font-size:14px;
+  color:var(--muted);
+}
 
-    /* ======= Brand header ======= */
-    .brand{
-      background:
-        linear-gradient(180deg, rgba(12,18,22,.96), rgba(8,16,21,.96));
-      border:1px solid rgba(255,255,255,.10);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      position:relative;
-    }
-    .brand:after{
-      content:"";
-      position:absolute; inset:-2px;
-      background:
-        radial-gradient(420px 260px at 18% 35%, rgba(0,255,132,.10), transparent 60%),
-        radial-gradient(340px 240px at 88% 22%, rgba(255,184,77,.08), transparent 60%),
-        radial-gradient(500px 300px at 60% 120%, rgba(255,59,59,.06), transparent 65%);
-      pointer-events:none;
-      opacity:.95;
-    }
+.heroMedia{
+  width:360px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
 
-    .brandInner{
-      position:relative; z-index:1;
-      padding: 16px 16px 14px;
-      display:flex;
-      gap:14px;
-      align-items:flex-start;
-    }
+.heroLogo{
+  background:#111;
+  border-radius:14px;
+  padding:10px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
 
-    .crest{
-      width:54px; height:54px;
-      border-radius: 14px;
-      background:
-        radial-gradient(circle at 30% 30%, rgba(255,255,255,.08), transparent 55%),
-        linear-gradient(180deg, rgba(0,255,132,.16), rgba(0,0,0,.25));
-      border:1px solid rgba(0,255,132,.28);
-      box-shadow: 0 12px 30px rgba(0,0,0,.55);
-      display:grid; place-items:center;
-      flex:0 0 auto;
-      position:relative;
-    }
-    .crest:before{
-      content:"";
-      position:absolute; inset:8px;
-      border:1px dashed rgba(0,255,132,.35);
-      border-radius: 12px;
-      opacity:.85;
-    }
+.heroLogo img{
+  max-width:100%;
+  height:50px;
+  object-fit:contain;
+}
 
-    h1{
-      margin:0;
-      font-size: clamp(18px, 3.2vw, 26px);
-      letter-spacing:.4px;
-      text-transform: uppercase;
-    }
-    .subtitle{
-      margin-top:6px;
-      color:var(--muted);
-      font-size: 13px;
-      line-height:1.35;
-    }
-    .stamps{
-      margin-top:10px;
-      display:flex; flex-wrap:wrap;
-      gap:10px;
-    }
-    .stamp{
-      font-size: 11px;
-      letter-spacing:.7px;
-      text-transform: uppercase;
-      padding: 8px 10px;
-      border-radius: 12px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.28);
-      color: rgba(230,240,242,.92);
-      display:inline-flex; align-items:center; gap:8px;
-      user-select:none;
-    }
-    .stamp .sq{
-      width:10px; height:10px; border-radius:3px;
-      background: rgba(0,255,132,.85);
-      box-shadow: 0 0 0 3px rgba(0,255,132,.10);
-    }
+.heroGun{
+  border-radius:14px;
+  overflow:hidden;
+  background:#111;
+}
 
-    /* ======= Bomb Timer HUD ======= */
-    .hud{
-      background:
-        linear-gradient(180deg, rgba(12,18,22,.96), rgba(8,16,21,.96));
-      border:1px solid rgba(255,255,255,.10);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow:hidden;
-      position:relative;
-    }
-    .hud:before{
-      content:"";
-      position:absolute; inset:0;
-      background:
-        repeating-linear-gradient(0deg, rgba(0,255,132,.03) 0 2px, transparent 2px 6px),
-        radial-gradient(520px 260px at 80% 10%, rgba(0,255,132,.08), transparent 60%);
-      pointer-events:none;
-      opacity:.9;
-    }
+.heroGun img{
+  width:100%;
+  height:220px;
+  object-fit:cover;
+  object-position:center 55%;
+}
 
-    .hudInner{ position:relative; z-index:1; padding: 14px; }
+/* ================= TIMER ================= */
 
-    .bombHeader{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      margin-bottom:12px;
-    }
-    .bombTitle{
-      display:flex; flex-direction:column; gap:2px;
-    }
-    .bombTitle b{
-      letter-spacing:.7px;
-      text-transform: uppercase;
-      font-size: 12px;
-      color: rgba(230,240,242,.92);
-    }
-    .bombTitle span{
-      font-size: 11px;
-      color: var(--muted);
-    }
+.timerBox{
+  margin-top:20px;
+  background:#000;
+  border-radius:14px;
+  padding:15px;
+  border:1px solid rgba(0,255,132,.25);
+}
 
-    .led{
-      display:flex; align-items:center; gap:10px;
-      padding: 8px 10px;
-      border-radius: 12px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.30);
-      user-select:none;
-      white-space:nowrap;
-    }
-    .ledDot{
-      width:10px; height:10px; border-radius:50%;
-      background: var(--nvg);
-      box-shadow: 0 0 14px rgba(0,255,132,.55), 0 0 0 4px rgba(0,255,132,.10);
-      animation: pulse 1.2s infinite ease-in-out;
-    }
-    .ledText{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      letter-spacing:.6px;
-      font-size: 12px;
-      color: rgba(230,240,242,.90);
-    }
+.timer{
+  font-family:monospace;
+  font-size:42px;
+  color:var(--green);
+  text-align:center;
+  letter-spacing:2px;
+}
 
-    @keyframes pulse{
-      0%,100%{transform:scale(1); opacity:.95}
-      50%{transform:scale(1.12); opacity:.75}
-    }
+.bar{
+  margin-top:12px;
+  height:10px;
+  background:#111;
+  border-radius:999px;
+  overflow:hidden;
+}
 
-    .bombBody{
-      border:1px solid rgba(0,255,132,.20);
-      border-radius: 16px;
-      background: rgba(0,0,0,.35);
-      padding: 12px;
-      position:relative;
-      overflow:hidden;
-    }
-    .bombBody:after{
-      content:"";
-      position:absolute; inset:-2px;
-      background: radial-gradient(280px 160px at 50% 0%, rgba(0,255,132,.10), transparent 60%);
-      pointer-events:none;
-      opacity:.85;
-    }
+.bar i{
+  display:block;
+  height:100%;
+  width:100%;
+  background:linear-gradient(90deg,var(--green),#00ff84);
+  transition:width .3s;
+}
 
-    .timerRow{
-      position:relative; z-index:1;
-      display:flex;
-      align-items:flex-end;
-      justify-content:space-between;
-      gap:12px;
-      flex-wrap:wrap;
-    }
+/* ================= GRID ================= */
 
-    .bigTimer{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      font-size: clamp(34px, 5vw, 48px);
-      font-weight: 900;
-      letter-spacing: 1.6px;
-      color: rgba(0,255,132,.92);
-      text-shadow: 0 0 22px rgba(0,255,132,.20);
-    }
+.panel{
+  margin-top:25px;
+  background:var(--panel);
+  border-radius:18px;
+  padding:20px;
+  border:1px solid rgba(255,255,255,.08);
+}
 
-    .seg{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      margin-top:10px;
-      position:relative; z-index:1;
-      flex-wrap:wrap;
-    }
-    .seg .pill{
-      font-size: 11px;
-      letter-spacing:.6px;
-      text-transform: uppercase;
-      padding: 8px 10px;
-      border-radius: 12px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.28);
-      color: rgba(230,240,242,.88);
-      display:inline-flex; gap:8px; align-items:center;
-    }
-    .pill .dot{width:10px;height:10px;border-radius:50%; box-shadow:0 0 0 3px rgba(255,255,255,.04)}
-    .dot.ok{background:var(--ok)}
-    .dot.warn{background:var(--warn)}
-    .dot.bad{background:var(--bad)}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:10px;
+}
 
-    .barWrap{
-      margin-top:12px;
-      position:relative; z-index:1;
-    }
-    .bar{
-      height: 12px;
-      border-radius: 999px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.06);
-      overflow:hidden;
-    }
-    .bar > i{
-      display:block;
-      height:100%;
-      width:50%;
-      background:
-        linear-gradient(90deg, rgba(0,255,132,.25), rgba(0,255,132,.85));
-      box-shadow: 0 0 24px rgba(0,255,132,.25);
-      border-radius: 999px;
-      transition: width .25s ease;
-    }
-    .barNote{
-      margin-top:8px;
-      font-size: 11px;
-      color: var(--muted);
-    }
+@media(max-width:600px){
+  .grid{grid-template-columns:repeat(4,1fr)}
+  .heroMedia{width:100%}
+}
 
-    .actions{
-      display:flex; gap:10px; flex-wrap:wrap;
-      margin-top: 12px;
-      position:relative; z-index:1;
-    }
-    button{
-      appearance:none;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.30);
-      color:var(--text);
-      padding: 10px 12px;
-      border-radius: 14px;
-      font-weight: 800;
-      letter-spacing:.4px;
-      text-transform: uppercase;
-      cursor:pointer;
-      transition: transform .08s ease, background .18s ease, border-color .18s ease;
-      touch-action: manipulation;
-    }
-    button:hover{background: rgba(255,255,255,.06)}
-    button:active{transform: translateY(1px)}
-    button.primary{
-      border-color: rgba(0,255,132,.26);
-      background: linear-gradient(180deg, rgba(0,255,132,.14), rgba(0,0,0,.30));
-    }
-    button.danger{
-      border-color: rgba(255,59,59,.28);
-      background: linear-gradient(180deg, rgba(255,59,59,.14), rgba(0,0,0,.30));
-    }
+.cell{
+  padding:14px;
+  background:#111;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.1);
+  cursor:pointer;
+  text-align:center;
+  font-weight:800;
+  letter-spacing:1px;
+}
 
-    /* ======= Main ======= */
-    .main{
-      margin-top: 14px;
-      display:grid;
-      gap:14px;
-      grid-template-columns: 1fr;
-    }
-    @media (min-width: 900px){
-      .main{grid-template-columns: 1.4fr .6fr}
-    }
+.cell.ok{border-color:rgba(0,255,132,.3)}
+.cell.warn{border-color:rgba(255,184,77,.3)}
+.cell.bad{
+  border-color:rgba(255,59,59,.4);
+  background:rgba(255,0,0,.1);
+}
 
-    .panel{
-      background:
-        linear-gradient(180deg, rgba(12,18,22,.96), rgba(8,16,21,.96));
-      border:1px solid rgba(255,255,255,.10);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 14px;
-      position:relative;
-      overflow:hidden;
-    }
-    .panel:after{
-      content:"";
-      position:absolute; inset:0;
-      background:
-        repeating-linear-gradient(135deg, rgba(255,255,255,.03) 0 4px, transparent 4px 10px);
-      opacity:.35;
-      pointer-events:none;
-    }
+/* ================= MODAL ================= */
 
-    .panelHeader{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:14px;
-      flex-wrap:wrap;
-      position:relative; z-index:1;
-      margin-bottom: 10px;
-    }
-    .panelHeader h2{
-      margin:0;
-      font-size: 12px;
-      letter-spacing: 1.1px;
-      text-transform: uppercase;
-      color: rgba(230,240,242,.92);
-    }
-    .hint{
-      margin:6px 0 0;
-      color: var(--muted);
-      font-size: 12px;
-      line-height:1.35;
-    }
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.75);
+  display:none;
+  align-items:center;
+  justify-content:center;
+}
 
-    .filters{
-      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
-    }
-    .input, select{
-      width: 100%;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.35);
-      color: var(--text);
-      padding: 10px 12px;
-      border-radius: 14px;
-      outline:none;
-      font-weight:700;
-      letter-spacing:.4px;
-    }
-    .filters .input{max-width: 260px}
-    .filters select{max-width: 210px}
+.modal.show{display:flex}
 
-    .grid{
-      position:relative; z-index:1;
-      display:grid;
-      gap: 10px;
-      grid-template-columns: repeat(5, 1fr);
-    }
-    @media (max-width: 560px){
-      .grid{grid-template-columns: repeat(4, 1fr)}
-      .filters .input, .filters select{max-width: 100%}
-    }
+.modalBox{
+  background:#0d1316;
+  padding:20px;
+  border-radius:14px;
+  width:90%;
+  max-width:500px;
+}
 
-    .cell{
-      border-radius: 14px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.35);
-      padding: 10px 10px 9px;
-      min-height: 56px;
-      display:flex;
-      flex-direction:column;
-      justify-content:center;
-      gap:6px;
-      cursor:pointer;
-      user-select:none;
-      -webkit-tap-highlight-color: transparent;
-      transition: transform .10s ease, border-color .18s ease, background .18s ease, filter .18s ease;
-      position:relative;
-      overflow:hidden;
-    }
-    .cell:hover{transform: translateY(-1px)}
-    .cell:active{transform: translateY(0px)}
-    .cell .n{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      font-size: 18px;
-      font-weight: 900;
-      letter-spacing: 1.2px;
-    }
-    .cell .s{
-      font-size: 11px;
-      color: var(--muted);
-      display:flex; align-items:center; gap:8px;
-      letter-spacing:.5px;
-      text-transform: uppercase;
-    }
-    .cell .badge{
-      width:10px; height:10px; border-radius:2px;
-      transform: rotate(45deg);
-      flex: 0 0 auto;
-      box-shadow: 0 0 0 3px rgba(255,255,255,.04);
-      background: rgba(255,255,255,.20);
-    }
+input,select{
+  width:100%;
+  margin-top:8px;
+  padding:10px;
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,.1);
+  background:#000;
+  color:white;
+}
 
-    .cell.ok{
-      border-color: rgba(0,255,132,.28);
-      background: linear-gradient(180deg, rgba(0,255,132,.08), rgba(0,0,0,.35));
-    }
-    .cell.ok .badge{background: rgba(0,255,132,.85)}
-    .cell.warn{
-      border-color: rgba(255,184,77,.28);
-      background: linear-gradient(180deg, rgba(255,184,77,.10), rgba(0,0,0,.35));
-    }
-    .cell.warn .badge{background: rgba(255,184,77,.85)}
-    .cell.bad{
-      border-color: rgba(255,59,59,.30);
-      background: linear-gradient(180deg, rgba(255,59,59,.12), rgba(0,0,0,.35));
-      filter: saturate(105%);
-    }
-    .cell.bad .badge{background: rgba(255,59,59,.9)}
-    .cell.bad:after{
-      content:"VENDIDO";
-      position:absolute;
-      top:8px; right:-38px;
-      transform: rotate(25deg);
-      font-size: 10px;
-      font-weight: 900;
-      letter-spacing: 1px;
-      padding: 4px 40px;
-      background: rgba(255,59,59,.22);
-      border: 1px solid rgba(255,59,59,.35);
-      color: rgba(255,255,255,.92);
-      text-transform: uppercase;
-    }
+button{
+  margin-top:12px;
+  padding:10px;
+  width:100%;
+  border:none;
+  border-radius:8px;
+  font-weight:800;
+  cursor:pointer;
+}
 
-    /* ======= Modal ======= */
-    .modalBackdrop{
-      position:fixed; inset:0;
-      background: rgba(0,0,0,.72);
-      display:none;
-      align-items:flex-end;
-      justify-content:center;
-      padding: 14px;
-      z-index: 50;
-    }
-    .modalBackdrop.show{display:flex}
-    .modal{
-      width:min(720px, 100%);
-      border-radius: 18px;
-      background: linear-gradient(180deg, rgba(12,18,22,.98), rgba(6,10,12,.98));
-      border:1px solid rgba(255,255,255,.12);
-      box-shadow: 0 22px 70px rgba(0,0,0,.72);
-      overflow:hidden;
-      position:relative;
-    }
-    .modal:before{
-      content:"";
-      position:absolute; inset:0;
-      background:
-        repeating-linear-gradient(0deg, rgba(0,255,132,.03) 0 2px, transparent 2px 7px);
-      opacity:.55;
-      pointer-events:none;
-    }
-    .modalTop{
-      position:relative; z-index:1;
-      padding: 14px 16px;
-      display:flex; align-items:center; justify-content:space-between;
-      border-bottom:1px solid rgba(255,255,255,.10);
-      gap:12px;
-    }
-    .modalTop b{
-      font-size: 12px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-    .modalBody{ position:relative; z-index:1; padding: 14px 16px; }
-    .grid2{ display:grid; gap:10px; grid-template-columns: 1fr; }
-    @media (min-width: 520px){
-      .modalBackdrop{align-items:center}
-      .grid2{grid-template-columns: 1fr 1fr}
-    }
-    .modalFoot{
-      position:relative; z-index:1;
-      padding: 14px 16px 16px;
-      display:flex; gap:10px; justify-content:flex-end;
-      border-top:1px solid rgba(255,255,255,.10);
-      flex-wrap:wrap;
-    }
-    .small{
-      font-size: 12px;
-      color: var(--muted);
-      margin-top:10px;
-      line-height:1.35;
-    }
-
-    /* ======= Toast ======= */
-    .toast{
-      position: fixed;
-      left: 50%;
-      bottom: 14px;
-      transform: translateX(-50%);
-      background: rgba(12,18,22,.96);
-      border: 1px solid rgba(255,255,255,.14);
-      box-shadow: 0 14px 36px rgba(0,0,0,.68);
-      padding: 10px 12px;
-      border-radius: 14px;
-      display:none;
-      z-index: 60;
-      color: var(--text);
-      max-width: min(720px, calc(100% - 24px));
-      font-size: 13px;
-      letter-spacing:.2px;
-      text-transform: uppercase;
-      font-weight:800;
-    }
-    .toast.show{display:block}
-
-    /* ======= Explode animation (visual only) ======= */
-    .explode{
-      animation: shake .35s ease-in-out 3;
-      border-color: rgba(255,59,59,.45) !important;
-      box-shadow: 0 0 0 2px rgba(255,59,59,.18), 0 28px 70px rgba(0,0,0,.72) !important;
-    }
-    @keyframes shake{
-      0%,100%{transform: translateX(0)}
-      20%{transform: translateX(-8px)}
-      40%{transform: translateX(8px)}
-      60%{transform: translateX(-6px)}
-      80%{transform: translateX(6px)}
-    }
-
-    a{color: var(--nvg); text-decoration:none}
-    a:hover{text-decoration:underline}
-  </style>
+.save{background:var(--green)}
+.danger{background:var(--red)}
+</style>
 </head>
 
 <body>
-  <div class="wrap">
+<div class="wrap">
 
-    <div class="topbar">
-      <!-- Brand -->
-      <section class="brand">
-        <div class="brandInner">
-          <div class="crest" aria-hidden="true">
-            <!-- crosshair icon -->
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-              <path d="M12 21a9 9 0 1 1 0-18 9 9 0 0 1 0 18Z" stroke="rgba(230,240,242,.9)" stroke-width="1.7"/>
-              <path d="M12 16.2a4.2 4.2 0 1 1 0-8.4 4.2 4.2 0 0 1 0 8.4Z" stroke="rgba(0,255,132,.92)" stroke-width="1.7"/>
-              <path d="M12 2.6v3" stroke="rgba(230,240,242,.75)" stroke-width="1.7" stroke-linecap="round"/>
-              <path d="M12 18.4v3" stroke="rgba(230,240,242,.75)" stroke-width="1.7" stroke-linecap="round"/>
-              <path d="M2.6 12h3" stroke="rgba(230,240,242,.75)" stroke-width="1.7" stroke-linecap="round"/>
-              <path d="M18.4 12h3" stroke="rgba(230,240,242,.75)" stroke-width="1.7" stroke-linecap="round"/>
-              <path d="M12 13.2a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4Z" fill="rgba(255,184,77,.95)"/>
-            </svg>
-          </div>
+  <div class="header">
 
-          <div style="flex:1 1 auto;">
-            <h1>Sorteo Sp Instructores : <span style="color:var(--nvg)">Tanfoglio Combat</span></h1>
-            <div class="subtitle">
-              Grilla 00–99 • modo demo (sin Sheets aún) • estética táctica.
-              <br/>El timer simula “cuenta regresiva” según los números que quedan.
-            </div>
+    <div class="headerText">
+      <h1>Sorteo Sp Instructores : Tanfoglio Combat</h1>
+      <div class="subtitle">
+        Grilla 00–99 • modo demo • estética táctica militar.
+      </div>
 
-            <div class="stamps">
-              <div class="stamp"><span class="sq"></span> 100 NUMEROS</div>
-              <div class="stamp"><span class="sq" style="background:rgba(255,184,77,.9)"></span> RESERVAS</div>
-              <div class="stamp"><span class="sq" style="background:rgba(255,59,59,.9)"></span> VENDIDOS</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- HUD / Bomb Timer -->
-      <aside class="hud" id="hud">
-        <div class="hudInner">
-          <div class="bombHeader">
-            <div class="bombTitle">
-              <b>CONTADOR / TIMER</b>
-              <span id="bombSub">ESTADO: ARMADO</span>
-            </div>
-            <div class="led" title="Indicador">
-              <span class="ledDot" id="ledDot"></span>
-              <span class="ledText" id="ledText">SAFE</span>
-            </div>
-          </div>
-
-          <div class="bombBody" id="bombBody">
-            <div class="timerRow">
-              <div>
-                <div class="bigTimer" id="bombTimer">99:99</div>
-                <div style="font-size:11px;color:var(--muted);letter-spacing:.7px;text-transform:uppercase;margin-top:4px;">
-                  “tiempo” restante proporcional a disponibles
-                </div>
-              </div>
-              <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; justify-content:flex-end;">
-                <div class="seg">
-                  <div class="pill"><span class="dot ok"></span> DISP <b id="kAvailable" style="margin-left:6px;color:rgba(230,240,242,.92)">—</b></div>
-                  <div class="pill"><span class="dot warn"></span> RES <b id="kReserved" style="margin-left:6px;color:rgba(230,240,242,.92)">—</b></div>
-                  <div class="pill"><span class="dot bad"></span> VEND <b id="kSold" style="margin-left:6px;color:rgba(230,240,242,.92)">—</b></div>
-                </div>
-              </div>
-            </div>
-
-            <div class="barWrap">
-              <div class="bar" aria-label="progreso">
-                <i id="bombBar"></i>
-              </div>
-              <div class="barNote" id="bombNote">Quedan <b id="remainTxt">—</b> números disponibles.</div>
-            </div>
-          </div>
-
-          <div class="actions">
-            <button class="primary" id="btnRandom">Elegir 1 disponible</button>
-            <button id="btnExport">Exportar JSON</button>
-            <button class="danger" id="btnReset">Reset demo</button>
-          </div>
-
-          <div class="small">
-            Tip: tocá un número para abrirlo. En demo, podés marcar “Reservado” o “Vendido”.
-          </div>
-        </div>
-      </aside>
+      <div class="timerBox">
+        <div class="timer" id="timer">99:99</div>
+        <div class="bar"><i id="bar"></i></div>
+      </div>
     </div>
 
-    <div class="main">
-      <!-- Grid panel -->
-      <section class="panel">
-        <div class="panelHeader">
-          <div>
-            <h2>GRILLA 00–99</h2>
-            <p class="hint">Buscar por número + filtrar por estado. Mobile optimizado.</p>
-          </div>
-          <div class="filters">
-            <input class="input" id="search" inputmode="numeric" placeholder="BUSCAR: 00, 17, 99…" maxlength="2" />
-            <select id="filter">
-              <option value="all">TODOS</option>
-              <option value="ok">DISPONIBLES</option>
-              <option value="warn">RESERVADOS</option>
-              <option value="bad">VENDIDOS</option>
-            </select>
-          </div>
-        </div>
-        <div class="grid" id="grid" aria-label="grilla de números"></div>
-      </section>
-
-      <!-- Info panel -->
-      <section class="panel">
-        <div class="panelHeader">
-          <div>
-            <h2>INFO</h2>
-            <p class="hint">
-              Esto es demo local. Después lo conectamos al Sheet con Apps Script (GET/POST) como la vez anterior.
-            </p>
-          </div>
-        </div>
-
-        <div style="position:relative; z-index:1; display:grid; gap:12px;">
-          <div class="stamp" style="justify-content:space-between;">
-            <span>MODELO</span>
-            <span style="color:rgba(230,240,242,.92);font-weight:900;">{ number, status, name, phone, ts }</span>
-          </div>
-          <div class="stamp" style="border-color:rgba(0,255,132,.22);">
-            <span class="sq"></span> DISPONIBLE: libre
-          </div>
-          <div class="stamp" style="border-color:rgba(255,184,77,.22);">
-            <span class="sq" style="background:rgba(255,184,77,.9)"></span> RESERVADO: con datos
-          </div>
-          <div class="stamp" style="border-color:rgba(255,59,59,.22);">
-            <span class="sq" style="background:rgba(255,59,59,.9)"></span> VENDIDO: bloqueado
-          </div>
-        </div>
-      </section>
+    <div class="heroMedia">
+      <div class="heroLogo">
+        <img src="tanfoglio-conheca-a-sua-historia-a29f2.webp" alt="Tanfoglio Logo">
+      </div>
+      <div class="heroGun">
+        <img src="IMG_6670 (1).png" alt="Tanfoglio Combat">
+      </div>
     </div>
 
   </div>
 
-  <!-- Modal -->
-  <div class="modalBackdrop" id="backdrop" role="dialog" aria-modal="true" aria-hidden="true">
-    <div class="modal" role="document">
-      <div class="modalTop">
-        <b id="modalTitle">NÚMERO —</b>
-        <button id="btnClose" aria-label="Cerrar">CERRAR</button>
-      </div>
-      <div class="modalBody">
-        <div class="grid2">
-          <div>
-            <label style="display:block; font-size:11px; color:var(--muted); margin-bottom:6px; letter-spacing:.7px; text-transform:uppercase;">NOMBRE</label>
-            <input class="input" id="inpName" placeholder="Ej: Juan Pérez" autocomplete="name" />
-          </div>
-          <div>
-            <label style="display:block; font-size:11px; color:var(--muted); margin-bottom:6px; letter-spacing:.7px; text-transform:uppercase;">TELÉFONO</label>
-            <input class="input" id="inpPhone" placeholder="Ej: 11 5555-5555" inputmode="tel" autocomplete="tel" />
-          </div>
-          <div>
-            <label style="display:block; font-size:11px; color:var(--muted); margin-bottom:6px; letter-spacing:.7px; text-transform:uppercase;">ESTADO</label>
-            <select id="inpStatus">
-              <option value="ok">DISPONIBLE</option>
-              <option value="warn">RESERVADO</option>
-              <option value="bad">VENDIDO</option>
-            </select>
-          </div>
-          <div>
-            <label style="display:block; font-size:11px; color:var(--muted); margin-bottom:6px; letter-spacing:.7px; text-transform:uppercase;">ACTUALIZACIÓN</label>
-            <input class="input" id="inpTs" readonly />
-          </div>
-        </div>
-
-        <div class="small" id="modalHint"></div>
-      </div>
-      <div class="modalFoot">
-        <button id="btnFree">LIBERAR</button>
-        <button class="primary" id="btnSave">GUARDAR</button>
-        <button class="danger" id="btnDelete">BORRAR DATOS</button>
-      </div>
-    </div>
+  <div class="panel">
+    <div class="grid" id="grid"></div>
   </div>
 
-  <div class="toast" id="toast"></div>
+</div>
 
-  <script>
-    // =========================
-    // Estado (demo) LocalStorage
-    // =========================
-    const STORAGE_KEY = "sp_sorteo_tanfoglio_combat_mil_v1";
+<div class="modal" id="modal">
+  <div class="modalBox">
+    <h3 id="modalTitle"></h3>
+    <input id="name" placeholder="Nombre">
+    <input id="phone" placeholder="Teléfono">
+    <select id="status">
+      <option value="ok">Disponible</option>
+      <option value="warn">Reservado</option>
+      <option value="bad">Vendido</option>
+    </select>
+    <button class="save" onclick="save()">Guardar</button>
+    <button class="danger" onclick="closeModal()">Cerrar</button>
+  </div>
+</div>
 
-    function defaultState(){
-      const items = [];
-      for(let i=0;i<100;i++){
-        const n = String(i).padStart(2,"0"); // 00-99
-        items.push({ number:n, status:"ok", name:"", phone:"", ts:null });
-      }
-      return { updatedAt: Date.now(), items, exploded:false };
-    }
+<script>
+const grid = document.getElementById("grid")
+const timer = document.getElementById("timer")
+const bar = document.getElementById("bar")
+const modal = document.getElementById("modal")
+const modalTitle = document.getElementById("modalTitle")
 
-    function loadState(){
-      try{
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if(!raw) return defaultState();
-        const parsed = JSON.parse(raw);
-        if(!parsed?.items?.length) return defaultState();
-        return parsed;
-      }catch(e){
-        return defaultState();
-      }
-    }
+let state = []
+let selected = null
 
-    function saveState(s){
-      s.updatedAt = Date.now();
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
-    }
+for(let i=0;i<100;i++){
+  state.push({number:String(i).padStart(2,"0"),status:"ok",name:"",phone:""})
+}
 
-    // =========================
-    // UI + helpers
-    // =========================
-    const gridEl = document.getElementById("grid");
-    const searchEl = document.getElementById("search");
-    const filterEl = document.getElementById("filter");
+function render(){
+  grid.innerHTML=""
+  let available = state.filter(n=>n.status==="ok").length
 
-    const kAvailable = document.getElementById("kAvailable");
-    const kReserved  = document.getElementById("kReserved");
-    const kSold      = document.getElementById("kSold");
+  state.forEach(n=>{
+    const div=document.createElement("div")
+    div.className="cell "+n.status
+    div.textContent=n.number
+    div.onclick=()=>openModal(n.number)
+    grid.appendChild(div)
+  })
 
-    const bombTimer = document.getElementById("bombTimer");
-    const bombBar = document.getElementById("bombBar");
-    const bombNote = document.getElementById("bombNote");
-    const remainTxt = document.getElementById("remainTxt");
-    const bombSub = document.getElementById("bombSub");
-    const ledDot = document.getElementById("ledDot");
-    const ledText = document.getElementById("ledText");
-    const hud = document.getElementById("hud");
-    const bombBody = document.getElementById("bombBody");
+  const units = Math.floor(available/100*9999)
+  const mm = String(Math.floor(units/100)).padStart(2,"0")
+  const ss = String(units%100).padStart(2,"0")
+  timer.textContent=mm+":"+ss
+  bar.style.width=(available)+"%"
 
-    const backdrop = document.getElementById("backdrop");
-    const modalTitle = document.getElementById("modalTitle");
-    const inpName = document.getElementById("inpName");
-    const inpPhone = document.getElementById("inpPhone");
-    const inpStatus = document.getElementById("inpStatus");
-    const inpTs = document.getElementById("inpTs");
-    const modalHint = document.getElementById("modalHint");
+  if(available===0){
+    timer.style.color="var(--red)"
+  }
+}
 
-    const btnClose = document.getElementById("btnClose");
-    const btnSave = document.getElementById("btnSave");
-    const btnFree = document.getElementById("btnFree");
-    const btnDelete = document.getElementById("btnDelete");
+function openModal(num){
+  selected=state.find(n=>n.number===num)
+  modalTitle.textContent="Número "+num
+  document.getElementById("name").value=selected.name
+  document.getElementById("phone").value=selected.phone
+  document.getElementById("status").value=selected.status
+  modal.classList.add("show")
+}
 
-    const btnRandom = document.getElementById("btnRandom");
-    const btnExport = document.getElementById("btnExport");
-    const btnReset = document.getElementById("btnReset");
+function closeModal(){
+  modal.classList.remove("show")
+}
 
-    const toast = document.getElementById("toast");
+function save(){
+  selected.name=document.getElementById("name").value
+  selected.phone=document.getElementById("phone").value
+  selected.status=document.getElementById("status").value
+  closeModal()
+  render()
+}
 
-    let state = loadState();
-    let selected = null;
+render()
+</script>
 
-    function showToast(msg){
-      toast.textContent = msg;
-      toast.classList.add("show");
-      clearTimeout(showToast._t);
-      showToast._t = setTimeout(()=>toast.classList.remove("show"), 2200);
-    }
-
-    function formatTs(ts){
-      if(!ts) return "—";
-      try{
-        return new Date(ts).toLocaleString("es-AR", { hour12:false });
-      }catch(e){ return "—"; }
-    }
-
-    function computeKPIs(items){
-      let ok=0,warn=0,bad=0;
-      for(const it of items){
-        if(it.status==="ok") ok++;
-        else if(it.status==="warn") warn++;
-        else if(it.status==="bad") bad++;
-      }
-      kAvailable.textContent = ok;
-      kReserved.textContent = warn;
-      kSold.textContent = bad;
-      return {ok,warn,bad};
-    }
-
-    function passFilter(it, q, f){
-      if(q){
-        if(!it.number.includes(q)) return false;
-      }
-      if(f && f!=="all"){
-        return it.status === f;
-      }
-      return true;
-    }
-
-    // =========================
-    // Bomb timer simulation
-    // =========================
-    // Visual total: 99:99 (just effect). We'll map available proportion to "remaining".
-    const TOTAL_UNITS = 9999; // 99:99 -> 9999 units
-    function unitsToTime(u){
-      u = Math.max(0, Math.min(TOTAL_UNITS, Math.floor(u)));
-      const mm = Math.floor(u / 100);
-      const ss = u % 100;
-      return String(mm).padStart(2,"0") + ":" + String(ss).padStart(2,"0");
-    }
-
-    function setLed(mode){
-      // mode: "safe" | "warn" | "danger" | "boom"
-      if(mode==="safe"){
-        ledDot.style.background = "var(--nvg)";
-        ledDot.style.boxShadow = "0 0 14px rgba(0,255,132,.55), 0 0 0 4px rgba(0,255,132,.10)";
-        ledText.textContent = "SAFE";
-        bombSub.textContent = "ESTADO: ARMADO";
-        ledDot.style.animationDuration = "1.2s";
-      } else if(mode==="warn"){
-        ledDot.style.background = "var(--amber)";
-        ledDot.style.boxShadow = "0 0 14px rgba(255,184,77,.55), 0 0 0 4px rgba(255,184,77,.10)";
-        ledText.textContent = "WARNING";
-        bombSub.textContent = "ESTADO: CRÍTICO";
-        ledDot.style.animationDuration = ".9s";
-      } else if(mode==="danger"){
-        ledDot.style.background = "var(--red)";
-        ledDot.style.boxShadow = "0 0 14px rgba(255,59,59,.60), 0 0 0 4px rgba(255,59,59,.10)";
-        ledText.textContent = "DANGER";
-        bombSub.textContent = "ESTADO: ÚLTIMOS NÚMEROS";
-        ledDot.style.animationDuration = ".6s";
-      } else { // boom
-        ledDot.style.background = "var(--red)";
-        ledDot.style.boxShadow = "0 0 20px rgba(255,59,59,.70), 0 0 0 6px rgba(255,59,59,.12)";
-        ledText.textContent = "BOOM";
-        bombSub.textContent = "ESTADO: COMPLETO";
-        ledDot.style.animationDuration = ".35s";
-      }
-    }
-
-    function explodeVisual(){
-      if(state.exploded) return;
-      state.exploded = true;
-      saveState(state);
-
-      bombBody.classList.add("explode");
-      hud.classList.add("explode");
-      setLed("boom");
-      showToast("GRILLA COMPLETA");
-
-      setTimeout(()=>{
-        bombBody.classList.remove("explode");
-        hud.classList.remove("explode");
-      }, 1800);
-    }
-
-    function updateBomb(kpis){
-      const available = kpis.ok;
-      const ratio = available / 100; // 1 -> full, 0 -> empty
-      const remainingUnits = Math.round(TOTAL_UNITS * ratio);
-
-      bombTimer.textContent = unitsToTime(remainingUnits);
-      bombBar.style.width = (ratio * 100).toFixed(0) + "%";
-      remainTxt.textContent = available;
-
-      if(available === 0){
-        explodeVisual();
-        bombNote.innerHTML = `Quedan <b>0</b> disponibles.`;
-        return;
-      } else {
-        // if we "un-explode" by admin, allow reset of exploded flag only via reset demo
-        bombNote.innerHTML = `Quedan <b>${available}</b> números disponibles.`;
-      }
-
-      // LED states
-      if(available > 20) setLed("safe");
-      else if(available > 7) setLed("warn");
-      else setLed("danger");
-    }
-
-    // =========================
-    // Render
-    // =========================
-    function render(){
-      const q = (searchEl.value || "").trim().slice(0,2);
-      const f = filterEl.value;
-
-      if(q && /[^0-9]/.test(q)){
-        searchEl.value = q.replace(/[^0-9]/g,"");
-      }
-
-      const items = state.items;
-      const kpis = computeKPIs(items);
-      updateBomb(kpis);
-
-      gridEl.innerHTML = "";
-      const frag = document.createDocumentFragment();
-
-      for(const it of items){
-        if(!passFilter(it, (searchEl.value||"").trim(), f)) continue;
-
-        const cell = document.createElement("div");
-        cell.className = `cell ${it.status}`;
-        cell.dataset.num = it.number;
-
-        const n = document.createElement("div");
-        n.className = "n";
-        n.textContent = it.number;
-
-        const s = document.createElement("div");
-        s.className = "s";
-
-        const badge = document.createElement("span");
-        badge.className = "badge";
-
-        const label = document.createElement("span");
-        label.textContent =
-          it.status==="ok" ? "DISPONIBLE" :
-          it.status==="warn" ? "RESERVADO" :
-          "VENDIDO";
-
-        s.appendChild(badge);
-        s.appendChild(label);
-
-        cell.appendChild(n);
-        cell.appendChild(s);
-
-        if(it.status!=="ok" && (it.name || it.phone)){
-          const who = document.createElement("div");
-          who.style.fontSize="11px";
-          who.style.color="rgba(230,240,242,.82)";
-          who.style.marginTop="2px";
-          who.style.whiteSpace="nowrap";
-          who.style.overflow="hidden";
-          who.style.textOverflow="ellipsis";
-          who.style.letterSpacing=".3px";
-          who.textContent = it.name ? it.name : it.phone;
-          cell.appendChild(who);
-        }
-
-        cell.addEventListener("click", ()=> openModal(it.number));
-        frag.appendChild(cell);
-      }
-
-      gridEl.appendChild(frag);
-    }
-
-    function openModal(num){
-      const it = state.items.find(x=>x.number===num);
-      if(!it) return;
-
-      selected = it;
-      modalTitle.textContent = `NÚMERO ${it.number}`;
-      inpName.value = it.name || "";
-      inpPhone.value = it.phone || "";
-      inpStatus.value = it.status || "ok";
-      inpTs.value = formatTs(it.ts);
-
-      modalHint.textContent =
-        it.status==="ok"
-          ? "DISPONIBLE: completá datos y guardá para reservar."
-          : it.status==="warn"
-            ? "RESERVADO: podés marcarlo VENDIDO o LIBERAR."
-            : "VENDIDO: en real solo admin debería modificar.";
-
-      backdrop.classList.add("show");
-      backdrop.setAttribute("aria-hidden","false");
-      setTimeout(()=>inpName.focus(), 60);
-    }
-
-    function closeModal(){
-      backdrop.classList.remove("show");
-      backdrop.setAttribute("aria-hidden","true");
-      selected = null;
-    }
-
-    function updateSelectedFromModal(){
-      if(!selected) return;
-
-      const name = inpName.value.trim();
-      const phone = inpPhone.value.trim();
-      const status = inpStatus.value;
-
-      selected.name = name;
-      selected.phone = phone;
-      selected.status = status;
-      selected.ts = Date.now();
-
-      saveState(state);
-      render();
-    }
-
-    // =========================
-    // Events
-    // =========================
-    btnClose.addEventListener("click", closeModal);
-    backdrop.addEventListener("click", (e)=>{ if(e.target === backdrop) closeModal(); });
-    window.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeModal(); });
-
-    btnSave.addEventListener("click", ()=>{
-      if(!selected) return;
-      const st = inpStatus.value;
-      if(st !== "ok"){
-        const hasData = inpName.value.trim() || inpPhone.value.trim();
-        if(!hasData){
-          showToast("CARGÁ NOMBRE O TELÉFONO");
-          return;
-        }
-      }
-      updateSelectedFromModal();
-      showToast(`GUARDADO ${selected.number}`);
-      closeModal();
-    });
-
-    btnFree.addEventListener("click", ()=>{
-      if(!selected) return;
-      inpStatus.value = "ok";
-      inpName.value = "";
-      inpPhone.value = "";
-      updateSelectedFromModal();
-      showToast(`LIBERADO ${selected.number}`);
-      closeModal();
-    });
-
-    btnDelete.addEventListener("click", ()=>{
-      if(!selected) return;
-      inpName.value = "";
-      inpPhone.value = "";
-      inpStatus.value = "ok";
-      updateSelectedFromModal();
-      showToast(`BORRADO ${selected.number}`);
-      closeModal();
-    });
-
-    btnRandom.addEventListener("click", ()=>{
-      const avail = state.items.filter(x=>x.status==="ok");
-      if(!avail.length){
-        showToast("NO QUEDAN DISPONIBLES");
-        return;
-      }
-      const pick = avail[Math.floor(Math.random()*avail.length)];
-      openModal(pick.number);
-    });
-
-    btnExport.addEventListener("click", ()=>{
-      const data = JSON.stringify(state, null, 2);
-      navigator.clipboard?.writeText(data).then(()=>{
-        showToast("JSON COPIADO");
-      }).catch(()=>{
-        const blob = new Blob([data], {type:"application/json"});
-        const a = document.createElement("a");
-        a.href = URL.createObjectURL(blob);
-        a.download = "sorteo_sp_instructores_tanfoglio_combat.json";
-        a.click();
-        URL.revokeObjectURL(a.href);
-        showToast("JSON EXPORTADO");
-      });
-    });
-
-    btnReset.addEventListener("click", ()=>{
-      if(!confirm("RESET DEMO: borrar todo el estado local. ¿Seguro?")) return;
-      state = defaultState();
-      saveState(state);
-      render();
-      showToast("RESET HECHO");
-    });
-
-    searchEl.addEventListener("input", ()=>{
-      searchEl.value = (searchEl.value || "").replace(/[^0-9]/g,"").slice(0,2);
-      render();
-    });
-    filterEl.addEventListener("change", render);
-
-    // Init
-    render();
-  </script>
 </body>
 </html>
