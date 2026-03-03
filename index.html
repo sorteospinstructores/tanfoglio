@@ -4,229 +4,365 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Sorteo Sp Instructores : Tanfoglio Combat</title>
+  <meta name="theme-color" content="#06090b" />
 
-  <meta name="theme-color" content="#0b0f14" />
   <style>
     :root{
-      --bg:#0b0f14;
-      --panel:#101821;
-      --panel2:#0e141b;
-      --text:#e7eef7;
-      --muted:#97a6b6;
+      --bg:#06090b;
+      --bg2:#0b1014;
+      --panel:#0c1216;
+      --panel2:#081015;
+      --text:#e6f0f2;
+      --muted:#9bb0b5;
       --line:rgba(255,255,255,.10);
 
-      --ok:#2ee59d;      /* disponible */
-      --warn:#ffcc66;    /* reservado */
-      --bad:#ff4d5a;     /* vendido */
+      --ok:#22e39a;      /* disponible */
+      --warn:#ffb84d;    /* reservado */
+      --bad:#ff3b3b;     /* vendido */
 
-      --accent:#7ad1ff;
-      --accent2:#a78bfa;
+      --nvg:#00ff84;
+      --amber:#ffb84d;
+      --red:#ff3b3b;
 
-      --shadow: 0 10px 30px rgba(0,0,0,.45);
-      --radius: 18px;
+      --shadow: 0 18px 55px rgba(0,0,0,.65);
+      --radius: 16px;
     }
 
     *{box-sizing:border-box}
     html,body{height:100%}
+
     body{
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
       color:var(--text);
       background:
-        radial-gradient(1200px 700px at 30% -10%, rgba(122,209,255,.14), transparent 55%),
-        radial-gradient(900px 600px at 90% 10%, rgba(167,139,250,.10), transparent 55%),
-        radial-gradient(900px 600px at 10% 110%, rgba(46,229,157,.07), transparent 60%),
-        linear-gradient(180deg, #070a0d, var(--bg));
+        radial-gradient(1200px 700px at 20% 0%, rgba(0,255,132,.10), transparent 55%),
+        radial-gradient(900px 600px at 100% 20%, rgba(255,184,77,.07), transparent 55%),
+        radial-gradient(900px 600px at 10% 120%, rgba(255,59,59,.06), transparent 60%),
+        linear-gradient(180deg, #030405, var(--bg));
       overflow-x:hidden;
     }
 
-    /* subtle “carbon fiber” feel */
+    /* gritty metal + noise */
     body:before{
       content:"";
       position:fixed; inset:0;
-      background-image:
-        linear-gradient(135deg, rgba(255,255,255,.035) 25%, transparent 25%),
-        linear-gradient(225deg, rgba(255,255,255,.035) 25%, transparent 25%),
-        linear-gradient(45deg, rgba(255,255,255,.02) 25%, transparent 25%),
-        linear-gradient(315deg, rgba(255,255,255,.02) 25%, transparent 25%);
-      background-position: 12px 0, 12px 0, 0 0, 0 0;
-      background-size: 24px 24px;
-      opacity:.35;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.02), transparent 25%, rgba(0,0,0,.35)),
+        repeating-linear-gradient(90deg, rgba(255,255,255,.02) 0 1px, transparent 1px 3px),
+        radial-gradient(2px 2px at 20% 40%, rgba(255,255,255,.06), transparent 60%),
+        radial-gradient(2px 2px at 80% 20%, rgba(255,255,255,.05), transparent 60%),
+        radial-gradient(2px 2px at 60% 70%, rgba(255,255,255,.05), transparent 60%);
+      opacity:.55;
       pointer-events:none;
       mix-blend-mode: overlay;
+      filter: contrast(115%) saturate(105%);
     }
 
     .wrap{
-      width:min(1080px, 100%);
+      width:min(1100px, 100%);
       margin:0 auto;
-      padding: clamp(16px, 3vw, 28px);
-      padding-bottom: 80px;
+      padding: clamp(14px, 3vw, 26px);
+      padding-bottom: 90px;
       position:relative;
       z-index:1;
     }
 
+    /* ======= Top layout ======= */
     .topbar{
-      display:flex;
+      display:grid;
+      grid-template-columns: 1fr;
       gap:14px;
-      align-items:stretch;
-      justify-content:space-between;
-      flex-wrap:wrap;
       margin-top: env(safe-area-inset-top);
     }
-
-    .brand{
-      flex: 1 1 520px;
-      background: linear-gradient(180deg, rgba(16,24,33,.9), rgba(14,20,27,.9));
-      border:1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 18px 18px 16px;
-      position:relative;
-      overflow:hidden;
+    @media (min-width: 900px){
+      .topbar{ grid-template-columns: 1.35fr .65fr; align-items:stretch; }
     }
 
+    /* ======= Brand header ======= */
+    .brand{
+      background:
+        linear-gradient(180deg, rgba(12,18,22,.96), rgba(8,16,21,.96));
+      border:1px solid rgba(255,255,255,.10);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
     .brand:after{
       content:"";
       position:absolute; inset:-2px;
       background:
-        radial-gradient(220px 220px at 18% 20%, rgba(122,209,255,.18), transparent 60%),
-        radial-gradient(180px 180px at 85% 30%, rgba(167,139,250,.14), transparent 55%),
-        radial-gradient(260px 260px at 70% 110%, rgba(46,229,157,.10), transparent 60%);
+        radial-gradient(420px 260px at 18% 35%, rgba(0,255,132,.10), transparent 60%),
+        radial-gradient(340px 240px at 88% 22%, rgba(255,184,77,.08), transparent 60%),
+        radial-gradient(500px 300px at 60% 120%, rgba(255,59,59,.06), transparent 65%);
       pointer-events:none;
+      opacity:.95;
     }
 
-    .brandHeader{
-      display:flex; gap:14px; align-items:center;
+    .brandInner{
       position:relative; z-index:1;
+      padding: 16px 16px 14px;
+      display:flex;
+      gap:14px;
+      align-items:flex-start;
     }
 
-    .logo{
-      width:52px; height:52px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.14);
+    .crest{
+      width:54px; height:54px;
+      border-radius: 14px;
       background:
-        radial-gradient(circle at 30% 30%, rgba(255,255,255,.10), transparent 55%),
-        linear-gradient(180deg, rgba(122,209,255,.18), rgba(16,24,33,.2));
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,.08), transparent 55%),
+        linear-gradient(180deg, rgba(0,255,132,.16), rgba(0,0,0,.25));
+      border:1px solid rgba(0,255,132,.28);
+      box-shadow: 0 12px 30px rgba(0,0,0,.55);
       display:grid; place-items:center;
       flex:0 0 auto;
-      box-shadow: 0 8px 24px rgba(0,0,0,.35);
+      position:relative;
     }
-    .logo svg{opacity:.95}
+    .crest:before{
+      content:"";
+      position:absolute; inset:8px;
+      border:1px dashed rgba(0,255,132,.35);
+      border-radius: 12px;
+      opacity:.85;
+    }
 
     h1{
       margin:0;
       font-size: clamp(18px, 3.2vw, 26px);
-      letter-spacing:.2px;
+      letter-spacing:.4px;
+      text-transform: uppercase;
     }
     .subtitle{
-      margin-top:4px;
+      margin-top:6px;
       color:var(--muted);
       font-size: 13px;
       line-height:1.35;
     }
-
-    .hud{
-      flex: 0 1 340px;
-      display:grid;
-      gap:12px;
+    .stamps{
+      margin-top:10px;
+      display:flex; flex-wrap:wrap;
+      gap:10px;
+    }
+    .stamp{
+      font-size: 11px;
+      letter-spacing:.7px;
+      text-transform: uppercase;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.28);
+      color: rgba(230,240,242,.92);
+      display:inline-flex; align-items:center; gap:8px;
+      user-select:none;
+    }
+    .stamp .sq{
+      width:10px; height:10px; border-radius:3px;
+      background: rgba(0,255,132,.85);
+      box-shadow: 0 0 0 3px rgba(0,255,132,.10);
     }
 
-    .card{
-      background: linear-gradient(180deg, rgba(16,24,33,.92), rgba(14,20,27,.92));
-      border:1px solid var(--line);
+    /* ======= Bomb Timer HUD ======= */
+    .hud{
+      background:
+        linear-gradient(180deg, rgba(12,18,22,.96), rgba(8,16,21,.96));
+      border:1px solid rgba(255,255,255,.10);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      padding: 14px 14px 12px;
-      position:relative;
       overflow:hidden;
+      position:relative;
     }
-    .card:before{
+    .hud:before{
       content:"";
       position:absolute; inset:0;
       background:
-        radial-gradient(240px 200px at 85% 10%, rgba(122,209,255,.12), transparent 60%),
-        radial-gradient(200px 220px at 15% 90%, rgba(46,229,157,.08), transparent 60%);
-      opacity:.9;
+        repeating-linear-gradient(0deg, rgba(0,255,132,.03) 0 2px, transparent 2px 6px),
+        radial-gradient(520px 260px at 80% 10%, rgba(0,255,132,.08), transparent 60%);
       pointer-events:none;
+      opacity:.9;
     }
 
-    .row{
-      display:flex; gap:12px; align-items:center; justify-content:space-between;
-      position:relative; z-index:1;
+    .hudInner{ position:relative; z-index:1; padding: 14px; }
+
+    .bombHeader{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:12px;
     }
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:8px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.10);
-      color: var(--muted);
+    .bombTitle{
+      display:flex; flex-direction:column; gap:2px;
+    }
+    .bombTitle b{
+      letter-spacing:.7px;
+      text-transform: uppercase;
       font-size: 12px;
+      color: rgba(230,240,242,.92);
+    }
+    .bombTitle span{
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .led{
+      display:flex; align-items:center; gap:10px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.30);
+      user-select:none;
       white-space:nowrap;
     }
-    .dot{
-      width:10px; height:10px; border-radius: 50%;
-      box-shadow: 0 0 0 3px rgba(255,255,255,.04);
+    .ledDot{
+      width:10px; height:10px; border-radius:50%;
+      background: var(--nvg);
+      box-shadow: 0 0 14px rgba(0,255,132,.55), 0 0 0 4px rgba(0,255,132,.10);
+      animation: pulse 1.2s infinite ease-in-out;
     }
-    .dot.ok{background: var(--ok)}
-    .dot.warn{background: var(--warn)}
-    .dot.bad{background: var(--bad)}
+    .ledText{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      letter-spacing:.6px;
+      font-size: 12px;
+      color: rgba(230,240,242,.90);
+    }
 
-    .kpi{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
+    @keyframes pulse{
+      0%,100%{transform:scale(1); opacity:.95}
+      50%{transform:scale(1.12); opacity:.75}
+    }
+
+    .bombBody{
+      border:1px solid rgba(0,255,132,.20);
+      border-radius: 16px;
+      background: rgba(0,0,0,.35);
+      padding: 12px;
+      position:relative;
+      overflow:hidden;
+    }
+    .bombBody:after{
+      content:"";
+      position:absolute; inset:-2px;
+      background: radial-gradient(280px 160px at 50% 0%, rgba(0,255,132,.10), transparent 60%);
+      pointer-events:none;
+      opacity:.85;
+    }
+
+    .timerRow{
+      position:relative; z-index:1;
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .bigTimer{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: clamp(34px, 5vw, 48px);
+      font-weight: 900;
+      letter-spacing: 1.6px;
+      color: rgba(0,255,132,.92);
+      text-shadow: 0 0 22px rgba(0,255,132,.20);
+    }
+
+    .seg{
+      display:flex;
       gap:10px;
+      align-items:center;
+      margin-top:10px;
+      position:relative; z-index:1;
+      flex-wrap:wrap;
+    }
+    .seg .pill{
+      font-size: 11px;
+      letter-spacing:.6px;
+      text-transform: uppercase;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.28);
+      color: rgba(230,240,242,.88);
+      display:inline-flex; gap:8px; align-items:center;
+    }
+    .pill .dot{width:10px;height:10px;border-radius:50%; box-shadow:0 0 0 3px rgba(255,255,255,.04)}
+    .dot.ok{background:var(--ok)}
+    .dot.warn{background:var(--warn)}
+    .dot.bad{background:var(--bad)}
+
+    .barWrap{
       margin-top:12px;
       position:relative; z-index:1;
     }
-    .k{
-      border-radius: 14px;
+    .bar{
+      height: 12px;
+      border-radius: 999px;
       border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.22);
-      padding:10px 10px 8px;
-      min-height:54px;
+      background: rgba(255,255,255,.06);
+      overflow:hidden;
     }
-    .k b{display:block; font-size: 16px}
-    .k span{display:block; font-size: 11px; color: var(--muted); margin-top:3px}
+    .bar > i{
+      display:block;
+      height:100%;
+      width:50%;
+      background:
+        linear-gradient(90deg, rgba(0,255,132,.25), rgba(0,255,132,.85));
+      box-shadow: 0 0 24px rgba(0,255,132,.25);
+      border-radius: 999px;
+      transition: width .25s ease;
+    }
+    .barNote{
+      margin-top:8px;
+      font-size: 11px;
+      color: var(--muted);
+    }
 
     .actions{
       display:flex; gap:10px; flex-wrap:wrap;
-      margin-top:12px;
+      margin-top: 12px;
       position:relative; z-index:1;
     }
     button{
       appearance:none;
       border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      color: var(--text);
+      background: rgba(0,0,0,.30);
+      color:var(--text);
       padding: 10px 12px;
       border-radius: 14px;
-      font-weight:600;
+      font-weight: 800;
+      letter-spacing:.4px;
+      text-transform: uppercase;
       cursor:pointer;
       transition: transform .08s ease, background .18s ease, border-color .18s ease;
       touch-action: manipulation;
     }
-    button:hover{background: rgba(255,255,255,.09)}
+    button:hover{background: rgba(255,255,255,.06)}
     button:active{transform: translateY(1px)}
     button.primary{
-      background: linear-gradient(180deg, rgba(46,229,157,.18), rgba(255,255,255,.06));
-      border-color: rgba(46,229,157,.30);
+      border-color: rgba(0,255,132,.26);
+      background: linear-gradient(180deg, rgba(0,255,132,.14), rgba(0,0,0,.30));
     }
     button.danger{
-      background: linear-gradient(180deg, rgba(255,77,90,.14), rgba(255,255,255,.06));
-      border-color: rgba(255,77,90,.28);
+      border-color: rgba(255,59,59,.28);
+      background: linear-gradient(180deg, rgba(255,59,59,.14), rgba(0,0,0,.30));
     }
 
+    /* ======= Main ======= */
     .main{
-      margin-top: 16px;
+      margin-top: 14px;
       display:grid;
-      gap:16px;
+      gap:14px;
       grid-template-columns: 1fr;
+    }
+    @media (min-width: 900px){
+      .main{grid-template-columns: 1.4fr .6fr}
     }
 
     .panel{
-      background: linear-gradient(180deg, rgba(16,24,33,.90), rgba(14,20,27,.90));
-      border:1px solid var(--line);
+      background:
+        linear-gradient(180deg, rgba(12,18,22,.96), rgba(8,16,21,.96));
+      border:1px solid rgba(255,255,255,.10);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       padding: 14px;
@@ -237,23 +373,26 @@
       content:"";
       position:absolute; inset:0;
       background:
-        radial-gradient(900px 420px at 50% -10%, rgba(255,255,255,.04), transparent 60%),
-        radial-gradient(600px 320px at 10% 120%, rgba(122,209,255,.05), transparent 70%);
+        repeating-linear-gradient(135deg, rgba(255,255,255,.03) 0 4px, transparent 4px 10px);
+      opacity:.35;
       pointer-events:none;
     }
 
     .panelHeader{
-      display:flex; align-items:flex-start; justify-content:space-between;
-      gap:14px; flex-wrap:wrap;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
       position:relative; z-index:1;
       margin-bottom: 10px;
     }
     .panelHeader h2{
       margin:0;
-      font-size: 15px;
-      letter-spacing:.3px;
+      font-size: 12px;
+      letter-spacing: 1.1px;
       text-transform: uppercase;
-      color: rgba(231,238,247,.92);
+      color: rgba(230,240,242,.92);
     }
     .hint{
       margin:6px 0 0;
@@ -268,11 +407,13 @@
     .input, select{
       width: 100%;
       border:1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.25);
+      background: rgba(0,0,0,.35);
       color: var(--text);
       padding: 10px 12px;
       border-radius: 14px;
       outline:none;
+      font-weight:700;
+      letter-spacing:.4px;
     }
     .filters .input{max-width: 260px}
     .filters select{max-width: 210px}
@@ -283,13 +424,17 @@
       gap: 10px;
       grid-template-columns: repeat(5, 1fr);
     }
+    @media (max-width: 560px){
+      .grid{grid-template-columns: repeat(4, 1fr)}
+      .filters .input, .filters select{max-width: 100%}
+    }
 
     .cell{
-      border-radius: 16px;
+      border-radius: 14px;
       border:1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.24);
+      background: rgba(0,0,0,.35);
       padding: 10px 10px 9px;
-      min-height: 54px;
+      min-height: 56px;
       display:flex;
       flex-direction:column;
       justify-content:center;
@@ -297,73 +442,68 @@
       cursor:pointer;
       user-select:none;
       -webkit-tap-highlight-color: transparent;
-      transition: transform .10s ease, border-color .18s ease, background .18s ease;
+      transition: transform .10s ease, border-color .18s ease, background .18s ease, filter .18s ease;
       position:relative;
       overflow:hidden;
     }
     .cell:hover{transform: translateY(-1px)}
     .cell:active{transform: translateY(0px)}
     .cell .n{
-      font-size: 16px;
-      font-weight: 800;
-      letter-spacing:.4px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: 1.2px;
     }
     .cell .s{
       font-size: 11px;
       color: var(--muted);
       display:flex; align-items:center; gap:8px;
+      letter-spacing:.5px;
+      text-transform: uppercase;
     }
     .cell .badge{
-      width:10px; height:10px; border-radius:50%;
+      width:10px; height:10px; border-radius:2px;
+      transform: rotate(45deg);
       flex: 0 0 auto;
       box-shadow: 0 0 0 3px rgba(255,255,255,.04);
+      background: rgba(255,255,255,.20);
     }
 
     .cell.ok{
-      border-color: rgba(46,229,157,.34);
-      background: linear-gradient(180deg, rgba(46,229,157,.10), rgba(0,0,0,.22));
+      border-color: rgba(0,255,132,.28);
+      background: linear-gradient(180deg, rgba(0,255,132,.08), rgba(0,0,0,.35));
     }
-    .cell.ok .badge{background: var(--ok)}
+    .cell.ok .badge{background: rgba(0,255,132,.85)}
     .cell.warn{
-      border-color: rgba(255,204,102,.32);
-      background: linear-gradient(180deg, rgba(255,204,102,.10), rgba(0,0,0,.22));
+      border-color: rgba(255,184,77,.28);
+      background: linear-gradient(180deg, rgba(255,184,77,.10), rgba(0,0,0,.35));
     }
-    .cell.warn .badge{background: var(--warn)}
+    .cell.warn .badge{background: rgba(255,184,77,.85)}
     .cell.bad{
-      border-color: rgba(255,77,90,.34);
-      background: linear-gradient(180deg, rgba(255,77,90,.12), rgba(0,0,0,.22));
-      opacity:.92;
+      border-color: rgba(255,59,59,.30);
+      background: linear-gradient(180deg, rgba(255,59,59,.12), rgba(0,0,0,.35));
+      filter: saturate(105%);
     }
-    .cell.bad .badge{background: var(--bad)}
-    .cell.bad .n{opacity:.9}
+    .cell.bad .badge{background: rgba(255,59,59,.9)}
     .cell.bad:after{
       content:"VENDIDO";
       position:absolute;
-      top:8px; right:-34px;
+      top:8px; right:-38px;
       transform: rotate(25deg);
       font-size: 10px;
-      font-weight:900;
-      letter-spacing:.6px;
-      padding: 4px 38px;
-      background: rgba(255,77,90,.22);
-      border: 1px solid rgba(255,77,90,.35);
+      font-weight: 900;
+      letter-spacing: 1px;
+      padding: 4px 40px;
+      background: rgba(255,59,59,.22);
+      border: 1px solid rgba(255,59,59,.35);
       color: rgba(255,255,255,.92);
+      text-transform: uppercase;
     }
 
-    /* Mobile tweaks */
-    @media (max-width: 560px){
-      .grid{grid-template-columns: repeat(4, 1fr)}
-      .filters .input, .filters select{max-width: 100%}
-      .kpi{grid-template-columns: repeat(3, 1fr)}
-    }
-    @media (min-width: 900px){
-      .main{grid-template-columns: 1.3fr .7fr}
-    }
-
-    /* Modal */
+    /* ======= Modal ======= */
     .modalBackdrop{
       position:fixed; inset:0;
-      background: rgba(0,0,0,.62);
+      background: rgba(0,0,0,.72);
       display:none;
       align-items:flex-end;
       justify-content:center;
@@ -372,36 +512,44 @@
     }
     .modalBackdrop.show{display:flex}
     .modal{
-      width:min(680px, 100%);
-      border-radius: 22px;
-      background: linear-gradient(180deg, rgba(16,24,33,.98), rgba(8,12,16,.98));
+      width:min(720px, 100%);
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(12,18,22,.98), rgba(6,10,12,.98));
       border:1px solid rgba(255,255,255,.12);
-      box-shadow: 0 20px 60px rgba(0,0,0,.6);
+      box-shadow: 0 22px 70px rgba(0,0,0,.72);
       overflow:hidden;
+      position:relative;
+    }
+    .modal:before{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        repeating-linear-gradient(0deg, rgba(0,255,132,.03) 0 2px, transparent 2px 7px);
+      opacity:.55;
+      pointer-events:none;
     }
     .modalTop{
+      position:relative; z-index:1;
       padding: 14px 16px;
       display:flex; align-items:center; justify-content:space-between;
       border-bottom:1px solid rgba(255,255,255,.10);
       gap:12px;
     }
-    .modalTop b{font-size: 14px; letter-spacing:.2px}
-    .modalBody{padding: 14px 16px}
-    .grid2{
-      display:grid;
-      gap:10px;
-      grid-template-columns: 1fr;
+    .modalTop b{
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
     }
+    .modalBody{ position:relative; z-index:1; padding: 14px 16px; }
+    .grid2{ display:grid; gap:10px; grid-template-columns: 1fr; }
     @media (min-width: 520px){
       .modalBackdrop{align-items:center}
       .grid2{grid-template-columns: 1fr 1fr}
     }
-
     .modalFoot{
+      position:relative; z-index:1;
       padding: 14px 16px 16px;
-      display:flex;
-      gap:10px;
-      justify-content:flex-end;
+      display:flex; gap:10px; justify-content:flex-end;
       border-top:1px solid rgba(255,255,255,.10);
       flex-wrap:wrap;
     }
@@ -412,14 +560,15 @@
       line-height:1.35;
     }
 
+    /* ======= Toast ======= */
     .toast{
       position: fixed;
       left: 50%;
       bottom: 14px;
       transform: translateX(-50%);
-      background: rgba(16,24,33,.96);
+      background: rgba(12,18,22,.96);
       border: 1px solid rgba(255,255,255,.14);
-      box-shadow: 0 12px 30px rgba(0,0,0,.55);
+      box-shadow: 0 14px 36px rgba(0,0,0,.68);
       padding: 10px 12px;
       border-radius: 14px;
       display:none;
@@ -427,61 +576,104 @@
       color: var(--text);
       max-width: min(720px, calc(100% - 24px));
       font-size: 13px;
+      letter-spacing:.2px;
+      text-transform: uppercase;
+      font-weight:800;
     }
     .toast.show{display:block}
-    .kbd{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      font-size: 12px;
-      padding:2px 6px;
-      border-radius: 10px;
-      background: rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.10);
-      color: rgba(231,238,247,.9);
-      white-space:nowrap;
+
+    /* ======= Explode animation (visual only) ======= */
+    .explode{
+      animation: shake .35s ease-in-out 3;
+      border-color: rgba(255,59,59,.45) !important;
+      box-shadow: 0 0 0 2px rgba(255,59,59,.18), 0 28px 70px rgba(0,0,0,.72) !important;
+    }
+    @keyframes shake{
+      0%,100%{transform: translateX(0)}
+      20%{transform: translateX(-8px)}
+      40%{transform: translateX(8px)}
+      60%{transform: translateX(-6px)}
+      80%{transform: translateX(6px)}
     }
 
-    a{color: var(--accent); text-decoration:none}
+    a{color: var(--nvg); text-decoration:none}
     a:hover{text-decoration:underline}
   </style>
 </head>
 
 <body>
   <div class="wrap">
+
     <div class="topbar">
+      <!-- Brand -->
       <section class="brand">
-        <div class="brandHeader">
-          <div class="logo" aria-hidden="true" title="Sp Instructores">
-            <!-- target + timer icon -->
+        <div class="brandInner">
+          <div class="crest" aria-hidden="true">
+            <!-- crosshair icon -->
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-              <path d="M12 21a9 9 0 1 1 0-18 9 9 0 0 1 0 18Z" stroke="rgba(231,238,247,.85)" stroke-width="1.6"/>
-              <path d="M12 17a5 5 0 1 1 0-10 5 5 0 0 1 0 10Z" stroke="rgba(122,209,255,.9)" stroke-width="1.6"/>
-              <path d="M12 13.2a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4Z" fill="rgba(46,229,157,.95)"/>
-              <path d="M17.6 6.4 20 4" stroke="rgba(167,139,250,.9)" stroke-width="1.6" stroke-linecap="round"/>
-              <path d="M18.2 9.2h2.2" stroke="rgba(167,139,250,.8)" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M12 21a9 9 0 1 1 0-18 9 9 0 0 1 0 18Z" stroke="rgba(230,240,242,.9)" stroke-width="1.7"/>
+              <path d="M12 16.2a4.2 4.2 0 1 1 0-8.4 4.2 4.2 0 0 1 0 8.4Z" stroke="rgba(0,255,132,.92)" stroke-width="1.7"/>
+              <path d="M12 2.6v3" stroke="rgba(230,240,242,.75)" stroke-width="1.7" stroke-linecap="round"/>
+              <path d="M12 18.4v3" stroke="rgba(230,240,242,.75)" stroke-width="1.7" stroke-linecap="round"/>
+              <path d="M2.6 12h3" stroke="rgba(230,240,242,.75)" stroke-width="1.7" stroke-linecap="round"/>
+              <path d="M18.4 12h3" stroke="rgba(230,240,242,.75)" stroke-width="1.7" stroke-linecap="round"/>
+              <path d="M12 13.2a1.2 1.2 0 1 1 0-2.4 1.2 1.2 0 0 1 0 2.4Z" fill="rgba(255,184,77,.95)"/>
             </svg>
           </div>
-          <div>
-            <h1>Sorteo Sp Instructores : <span style="color:var(--accent)">Tanfoglio Combat</span></h1>
+
+          <div style="flex:1 1 auto;">
+            <h1>Sorteo Sp Instructores : <span style="color:var(--nvg)">Tanfoglio Combat</span></h1>
             <div class="subtitle">
-              Grilla de 100 números (00–99). Look tiro dinámico. Reservas demo con <span class="kbd">LocalStorage</span>.
-              <br/>Después lo conectamos a Google Sheets (Apps Script) igual que la vez anterior.
+              Grilla 00–99 • modo demo (sin Sheets aún) • estética táctica.
+              <br/>El timer simula “cuenta regresiva” según los números que quedan.
+            </div>
+
+            <div class="stamps">
+              <div class="stamp"><span class="sq"></span> 100 NUMEROS</div>
+              <div class="stamp"><span class="sq" style="background:rgba(255,184,77,.9)"></span> RESERVAS</div>
+              <div class="stamp"><span class="sq" style="background:rgba(255,59,59,.9)"></span> VENDIDOS</div>
             </div>
           </div>
         </div>
       </section>
 
-      <aside class="hud">
-        <section class="card">
-          <div class="row">
-            <div class="pill"><span class="dot ok"></span> Disponible</div>
-            <div class="pill"><span class="dot warn"></span> Reservado</div>
-            <div class="pill"><span class="dot bad"></span> Vendido</div>
+      <!-- HUD / Bomb Timer -->
+      <aside class="hud" id="hud">
+        <div class="hudInner">
+          <div class="bombHeader">
+            <div class="bombTitle">
+              <b>CONTADOR / TIMER</b>
+              <span id="bombSub">ESTADO: ARMADO</span>
+            </div>
+            <div class="led" title="Indicador">
+              <span class="ledDot" id="ledDot"></span>
+              <span class="ledText" id="ledText">SAFE</span>
+            </div>
           </div>
 
-          <div class="kpi" aria-label="estado">
-            <div class="k"><b id="kAvailable">—</b><span>Disponibles</span></div>
-            <div class="k"><b id="kReserved">—</b><span>Reservados</span></div>
-            <div class="k"><b id="kSold">—</b><span>Vendidos</span></div>
+          <div class="bombBody" id="bombBody">
+            <div class="timerRow">
+              <div>
+                <div class="bigTimer" id="bombTimer">99:99</div>
+                <div style="font-size:11px;color:var(--muted);letter-spacing:.7px;text-transform:uppercase;margin-top:4px;">
+                  “tiempo” restante proporcional a disponibles
+                </div>
+              </div>
+              <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; justify-content:flex-end;">
+                <div class="seg">
+                  <div class="pill"><span class="dot ok"></span> DISP <b id="kAvailable" style="margin-left:6px;color:rgba(230,240,242,.92)">—</b></div>
+                  <div class="pill"><span class="dot warn"></span> RES <b id="kReserved" style="margin-left:6px;color:rgba(230,240,242,.92)">—</b></div>
+                  <div class="pill"><span class="dot bad"></span> VEND <b id="kSold" style="margin-left:6px;color:rgba(230,240,242,.92)">—</b></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="barWrap">
+              <div class="bar" aria-label="progreso">
+                <i id="bombBar"></i>
+              </div>
+              <div class="barNote" id="bombNote">Quedan <b id="remainTxt">—</b> números disponibles.</div>
+            </div>
           </div>
 
           <div class="actions">
@@ -491,96 +683,91 @@
           </div>
 
           <div class="small">
-            Tip: tocá un número <b>disponible</b> para reservarlo.
-            Tocá un número <b>reservado</b> para marcarlo vendido (modo demo).
+            Tip: tocá un número para abrirlo. En demo, podés marcar “Reservado” o “Vendido”.
           </div>
-        </section>
+        </div>
       </aside>
     </div>
 
     <div class="main">
+      <!-- Grid panel -->
       <section class="panel">
         <div class="panelHeader">
           <div>
-            <h2>Grilla 00–99</h2>
-            <p class="hint">Buscá por número, filtrá por estado y tocá para abrir el detalle.</p>
+            <h2>GRILLA 00–99</h2>
+            <p class="hint">Buscar por número + filtrar por estado. Mobile optimizado.</p>
           </div>
-
           <div class="filters">
-            <input class="input" id="search" inputmode="numeric" placeholder="Buscar: 00, 17, 99…" maxlength="2" />
+            <input class="input" id="search" inputmode="numeric" placeholder="BUSCAR: 00, 17, 99…" maxlength="2" />
             <select id="filter">
-              <option value="all">Todos</option>
-              <option value="ok">Disponibles</option>
-              <option value="warn">Reservados</option>
-              <option value="bad">Vendidos</option>
+              <option value="all">TODOS</option>
+              <option value="ok">DISPONIBLES</option>
+              <option value="warn">RESERVADOS</option>
+              <option value="bad">VENDIDOS</option>
             </select>
           </div>
         </div>
-
         <div class="grid" id="grid" aria-label="grilla de números"></div>
       </section>
 
+      <!-- Info panel -->
       <section class="panel">
         <div class="panelHeader">
           <div>
-            <h2>Info</h2>
+            <h2>INFO</h2>
             <p class="hint">
-              Este front ya está listo para conectar a Sheets:
-              después reemplazamos <span class="kbd">saveState/loadState</span> por llamadas a tu Apps Script.
+              Esto es demo local. Después lo conectamos al Sheet con Apps Script (GET/POST) como la vez anterior.
             </p>
           </div>
         </div>
 
         <div style="position:relative; z-index:1; display:grid; gap:12px;">
-          <div class="pill">
-            <span class="dot ok"></span>
-            <span><b>00–99</b> con formato fijo (2 dígitos)</span>
+          <div class="stamp" style="justify-content:space-between;">
+            <span>MODELO</span>
+            <span style="color:rgba(230,240,242,.92);font-weight:900;">{ number, status, name, phone, ts }</span>
           </div>
-          <div class="pill">
-            <span class="dot warn"></span>
-            <span>Modal con datos: nombre + teléfono (demo)</span>
+          <div class="stamp" style="border-color:rgba(0,255,132,.22);">
+            <span class="sq"></span> DISPONIBLE: libre
           </div>
-          <div class="pill">
-            <span class="dot bad"></span>
-            <span>Marcado “VENDIDO” visible y claro</span>
+          <div class="stamp" style="border-color:rgba(255,184,77,.22);">
+            <span class="sq" style="background:rgba(255,184,77,.9)"></span> RESERVADO: con datos
           </div>
-
-          <div class="small">
-            Cuando lo quieras conectar, el modelo de datos ya está:
-            <span class="kbd">{ number, status, name, phone, ts }</span>.
+          <div class="stamp" style="border-color:rgba(255,59,59,.22);">
+            <span class="sq" style="background:rgba(255,59,59,.9)"></span> VENDIDO: bloqueado
           </div>
         </div>
       </section>
     </div>
+
   </div>
 
   <!-- Modal -->
   <div class="modalBackdrop" id="backdrop" role="dialog" aria-modal="true" aria-hidden="true">
     <div class="modal" role="document">
       <div class="modalTop">
-        <b id="modalTitle">Número —</b>
-        <button id="btnClose" aria-label="Cerrar">Cerrar</button>
+        <b id="modalTitle">NÚMERO —</b>
+        <button id="btnClose" aria-label="Cerrar">CERRAR</button>
       </div>
       <div class="modalBody">
         <div class="grid2">
           <div>
-            <label style="display:block; font-size:12px; color:var(--muted); margin-bottom:6px;">Nombre y apellido</label>
+            <label style="display:block; font-size:11px; color:var(--muted); margin-bottom:6px; letter-spacing:.7px; text-transform:uppercase;">NOMBRE</label>
             <input class="input" id="inpName" placeholder="Ej: Juan Pérez" autocomplete="name" />
           </div>
           <div>
-            <label style="display:block; font-size:12px; color:var(--muted); margin-bottom:6px;">Teléfono</label>
+            <label style="display:block; font-size:11px; color:var(--muted); margin-bottom:6px; letter-spacing:.7px; text-transform:uppercase;">TELÉFONO</label>
             <input class="input" id="inpPhone" placeholder="Ej: 11 5555-5555" inputmode="tel" autocomplete="tel" />
           </div>
           <div>
-            <label style="display:block; font-size:12px; color:var(--muted); margin-bottom:6px;">Estado</label>
+            <label style="display:block; font-size:11px; color:var(--muted); margin-bottom:6px; letter-spacing:.7px; text-transform:uppercase;">ESTADO</label>
             <select id="inpStatus">
-              <option value="ok">Disponible</option>
-              <option value="warn">Reservado</option>
-              <option value="bad">Vendido</option>
+              <option value="ok">DISPONIBLE</option>
+              <option value="warn">RESERVADO</option>
+              <option value="bad">VENDIDO</option>
             </select>
           </div>
           <div>
-            <label style="display:block; font-size:12px; color:var(--muted); margin-bottom:6px;">Última actualización</label>
+            <label style="display:block; font-size:11px; color:var(--muted); margin-bottom:6px; letter-spacing:.7px; text-transform:uppercase;">ACTUALIZACIÓN</label>
             <input class="input" id="inpTs" readonly />
           </div>
         </div>
@@ -588,9 +775,9 @@
         <div class="small" id="modalHint"></div>
       </div>
       <div class="modalFoot">
-        <button id="btnFree">Liberar (Disponible)</button>
-        <button class="primary" id="btnSave">Guardar</button>
-        <button class="danger" id="btnDelete">Borrar datos</button>
+        <button id="btnFree">LIBERAR</button>
+        <button class="primary" id="btnSave">GUARDAR</button>
+        <button class="danger" id="btnDelete">BORRAR DATOS</button>
       </div>
     </div>
   </div>
@@ -599,18 +786,17 @@
 
   <script>
     // =========================
-    // Modelo de datos (demo)
+    // Estado (demo) LocalStorage
     // =========================
-    const STORAGE_KEY = "sp_sorteo_tanfoglio_combat_v1";
+    const STORAGE_KEY = "sp_sorteo_tanfoglio_combat_mil_v1";
 
-    /** status: "ok" | "warn" | "bad" */
     function defaultState(){
       const items = [];
       for(let i=0;i<100;i++){
         const n = String(i).padStart(2,"0"); // 00-99
         items.push({ number:n, status:"ok", name:"", phone:"", ts:null });
       }
-      return { updatedAt: Date.now(), items };
+      return { updatedAt: Date.now(), items, exploded:false };
     }
 
     function loadState(){
@@ -625,13 +811,13 @@
       }
     }
 
-    function saveState(state){
-      state.updatedAt = Date.now();
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    function saveState(s){
+      s.updatedAt = Date.now();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
     }
 
     // =========================
-    // UI helpers
+    // UI + helpers
     // =========================
     const gridEl = document.getElementById("grid");
     const searchEl = document.getElementById("search");
@@ -640,6 +826,16 @@
     const kAvailable = document.getElementById("kAvailable");
     const kReserved  = document.getElementById("kReserved");
     const kSold      = document.getElementById("kSold");
+
+    const bombTimer = document.getElementById("bombTimer");
+    const bombBar = document.getElementById("bombBar");
+    const bombNote = document.getElementById("bombNote");
+    const remainTxt = document.getElementById("remainTxt");
+    const bombSub = document.getElementById("bombSub");
+    const ledDot = document.getElementById("ledDot");
+    const ledText = document.getElementById("ledText");
+    const hud = document.getElementById("hud");
+    const bombBody = document.getElementById("bombBody");
 
     const backdrop = document.getElementById("backdrop");
     const modalTitle = document.getElementById("modalTitle");
@@ -661,7 +857,7 @@
     const toast = document.getElementById("toast");
 
     let state = loadState();
-    let selected = null; // item reference
+    let selected = null;
 
     function showToast(msg){
       toast.textContent = msg;
@@ -687,6 +883,7 @@
       kAvailable.textContent = ok;
       kReserved.textContent = warn;
       kSold.textContent = bad;
+      return {ok,warn,bad};
     }
 
     function passFilter(it, q, f){
@@ -699,17 +896,101 @@
       return true;
     }
 
+    // =========================
+    // Bomb timer simulation
+    // =========================
+    // Visual total: 99:99 (just effect). We'll map available proportion to "remaining".
+    const TOTAL_UNITS = 9999; // 99:99 -> 9999 units
+    function unitsToTime(u){
+      u = Math.max(0, Math.min(TOTAL_UNITS, Math.floor(u)));
+      const mm = Math.floor(u / 100);
+      const ss = u % 100;
+      return String(mm).padStart(2,"0") + ":" + String(ss).padStart(2,"0");
+    }
+
+    function setLed(mode){
+      // mode: "safe" | "warn" | "danger" | "boom"
+      if(mode==="safe"){
+        ledDot.style.background = "var(--nvg)";
+        ledDot.style.boxShadow = "0 0 14px rgba(0,255,132,.55), 0 0 0 4px rgba(0,255,132,.10)";
+        ledText.textContent = "SAFE";
+        bombSub.textContent = "ESTADO: ARMADO";
+        ledDot.style.animationDuration = "1.2s";
+      } else if(mode==="warn"){
+        ledDot.style.background = "var(--amber)";
+        ledDot.style.boxShadow = "0 0 14px rgba(255,184,77,.55), 0 0 0 4px rgba(255,184,77,.10)";
+        ledText.textContent = "WARNING";
+        bombSub.textContent = "ESTADO: CRÍTICO";
+        ledDot.style.animationDuration = ".9s";
+      } else if(mode==="danger"){
+        ledDot.style.background = "var(--red)";
+        ledDot.style.boxShadow = "0 0 14px rgba(255,59,59,.60), 0 0 0 4px rgba(255,59,59,.10)";
+        ledText.textContent = "DANGER";
+        bombSub.textContent = "ESTADO: ÚLTIMOS NÚMEROS";
+        ledDot.style.animationDuration = ".6s";
+      } else { // boom
+        ledDot.style.background = "var(--red)";
+        ledDot.style.boxShadow = "0 0 20px rgba(255,59,59,.70), 0 0 0 6px rgba(255,59,59,.12)";
+        ledText.textContent = "BOOM";
+        bombSub.textContent = "ESTADO: COMPLETO";
+        ledDot.style.animationDuration = ".35s";
+      }
+    }
+
+    function explodeVisual(){
+      if(state.exploded) return;
+      state.exploded = true;
+      saveState(state);
+
+      bombBody.classList.add("explode");
+      hud.classList.add("explode");
+      setLed("boom");
+      showToast("GRILLA COMPLETA");
+
+      setTimeout(()=>{
+        bombBody.classList.remove("explode");
+        hud.classList.remove("explode");
+      }, 1800);
+    }
+
+    function updateBomb(kpis){
+      const available = kpis.ok;
+      const ratio = available / 100; // 1 -> full, 0 -> empty
+      const remainingUnits = Math.round(TOTAL_UNITS * ratio);
+
+      bombTimer.textContent = unitsToTime(remainingUnits);
+      bombBar.style.width = (ratio * 100).toFixed(0) + "%";
+      remainTxt.textContent = available;
+
+      if(available === 0){
+        explodeVisual();
+        bombNote.innerHTML = `Quedan <b>0</b> disponibles.`;
+        return;
+      } else {
+        // if we "un-explode" by admin, allow reset of exploded flag only via reset demo
+        bombNote.innerHTML = `Quedan <b>${available}</b> números disponibles.`;
+      }
+
+      // LED states
+      if(available > 20) setLed("safe");
+      else if(available > 7) setLed("warn");
+      else setLed("danger");
+    }
+
+    // =========================
+    // Render
+    // =========================
     function render(){
       const q = (searchEl.value || "").trim().slice(0,2);
       const f = filterEl.value;
 
-      // keep only digits in search
       if(q && /[^0-9]/.test(q)){
         searchEl.value = q.replace(/[^0-9]/g,"");
       }
 
       const items = state.items;
-      computeKPIs(items);
+      const kpis = computeKPIs(items);
+      updateBomb(kpis);
 
       gridEl.innerHTML = "";
       const frag = document.createDocumentFragment();
@@ -733,9 +1014,9 @@
 
         const label = document.createElement("span");
         label.textContent =
-          it.status==="ok" ? "Disponible" :
-          it.status==="warn" ? "Reservado" :
-          "Vendido";
+          it.status==="ok" ? "DISPONIBLE" :
+          it.status==="warn" ? "RESERVADO" :
+          "VENDIDO";
 
         s.appendChild(badge);
         s.appendChild(label);
@@ -743,27 +1024,20 @@
         cell.appendChild(n);
         cell.appendChild(s);
 
-        // hint of owner
         if(it.status!=="ok" && (it.name || it.phone)){
           const who = document.createElement("div");
           who.style.fontSize="11px";
-          who.style.color="rgba(231,238,247,.78)";
+          who.style.color="rgba(230,240,242,.82)";
           who.style.marginTop="2px";
           who.style.whiteSpace="nowrap";
           who.style.overflow="hidden";
           who.style.textOverflow="ellipsis";
+          who.style.letterSpacing=".3px";
           who.textContent = it.name ? it.name : it.phone;
           cell.appendChild(who);
         }
 
-        cell.addEventListener("click", ()=>{
-          // demo quick actions:
-          // - if ok -> open modal to reserve
-          // - if warn -> open modal
-          // - if bad -> open modal
-          openModal(it.number);
-        });
-
+        cell.addEventListener("click", ()=> openModal(it.number));
         frag.appendChild(cell);
       }
 
@@ -775,7 +1049,7 @@
       if(!it) return;
 
       selected = it;
-      modalTitle.textContent = `Número ${it.number}`;
+      modalTitle.textContent = `NÚMERO ${it.number}`;
       inpName.value = it.name || "";
       inpPhone.value = it.phone || "";
       inpStatus.value = it.status || "ok";
@@ -783,14 +1057,13 @@
 
       modalHint.textContent =
         it.status==="ok"
-          ? "Disponible: completá tus datos y guardá para reservar."
+          ? "DISPONIBLE: completá datos y guardá para reservar."
           : it.status==="warn"
-            ? "Reservado (demo): podés marcarlo como Vendido o liberarlo."
-            : "Vendido: solo admin debería cambiar esto (demo).";
+            ? "RESERVADO: podés marcarlo VENDIDO o LIBERAR."
+            : "VENDIDO: en real solo admin debería modificar.";
 
       backdrop.classList.add("show");
       backdrop.setAttribute("aria-hidden","false");
-
       setTimeout(()=>inpName.focus(), 60);
     }
 
@@ -816,29 +1089,25 @@
       render();
     }
 
-    // Buttons
+    // =========================
+    // Events
+    // =========================
     btnClose.addEventListener("click", closeModal);
-    backdrop.addEventListener("click", (e)=>{
-      if(e.target === backdrop) closeModal();
-    });
-    window.addEventListener("keydown", (e)=>{
-      if(e.key === "Escape") closeModal();
-    });
+    backdrop.addEventListener("click", (e)=>{ if(e.target === backdrop) closeModal(); });
+    window.addEventListener("keydown", (e)=>{ if(e.key === "Escape") closeModal(); });
 
     btnSave.addEventListener("click", ()=>{
       if(!selected) return;
-
       const st = inpStatus.value;
       if(st !== "ok"){
-        // if reserving/selling require at least one contact datum (demo guardrail)
         const hasData = inpName.value.trim() || inpPhone.value.trim();
         if(!hasData){
-          showToast("Cargá al menos nombre o teléfono.");
+          showToast("CARGÁ NOMBRE O TELÉFONO");
           return;
         }
       }
       updateSelectedFromModal();
-      showToast(`Guardado ${selected.number}.`);
+      showToast(`GUARDADO ${selected.number}`);
       closeModal();
     });
 
@@ -848,7 +1117,7 @@
       inpName.value = "";
       inpPhone.value = "";
       updateSelectedFromModal();
-      showToast(`Liberado ${selected.number}.`);
+      showToast(`LIBERADO ${selected.number}`);
       closeModal();
     });
 
@@ -858,14 +1127,14 @@
       inpPhone.value = "";
       inpStatus.value = "ok";
       updateSelectedFromModal();
-      showToast(`Datos borrados ${selected.number}.`);
+      showToast(`BORRADO ${selected.number}`);
       closeModal();
     });
 
     btnRandom.addEventListener("click", ()=>{
       const avail = state.items.filter(x=>x.status==="ok");
       if(!avail.length){
-        showToast("No quedan disponibles.");
+        showToast("NO QUEDAN DISPONIBLES");
         return;
       }
       const pick = avail[Math.floor(Math.random()*avail.length)];
@@ -875,46 +1144,34 @@
     btnExport.addEventListener("click", ()=>{
       const data = JSON.stringify(state, null, 2);
       navigator.clipboard?.writeText(data).then(()=>{
-        showToast("JSON copiado al portapapeles.");
+        showToast("JSON COPIADO");
       }).catch(()=>{
-        // fallback: download
         const blob = new Blob([data], {type:"application/json"});
         const a = document.createElement("a");
         a.href = URL.createObjectURL(blob);
         a.download = "sorteo_sp_instructores_tanfoglio_combat.json";
         a.click();
         URL.revokeObjectURL(a.href);
-        showToast("JSON exportado.");
+        showToast("JSON EXPORTADO");
       });
     });
 
     btnReset.addEventListener("click", ()=>{
-      if(!confirm("Reset demo: borrar todo el estado local. ¿Seguro?")) return;
+      if(!confirm("RESET DEMO: borrar todo el estado local. ¿Seguro?")) return;
       state = defaultState();
       saveState(state);
       render();
-      showToast("Reset hecho.");
+      showToast("RESET HECHO");
     });
 
-    // Filters
     searchEl.addEventListener("input", ()=>{
-      // allow only two digits
       searchEl.value = (searchEl.value || "").replace(/[^0-9]/g,"").slice(0,2);
       render();
     });
     filterEl.addEventListener("change", render);
 
-    // Initial render
+    // Init
     render();
-
-    // =========================
-    // Hooks para conectar a Sheets luego
-    // =========================
-    // Reemplazarías loadState/saveState por fetch a tu Apps Script:
-    //
-    // async function apiGetAll(){ return fetch(APP_SCRIPT_URL).then(r=>r.json()); }
-    // async function apiUpdate(item){ return fetch(APP_SCRIPT_URL, {method:"POST", body: JSON.stringify(item)}).then(r=>r.json()); }
-    //
   </script>
 </body>
 </html>
