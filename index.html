@@ -3,320 +3,1216 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Sorteo Sp Instructores : Tanfoglio Combat</title>
+<title>Sorteo SP Instructores — Tanfoglio Combat</title>
 
 <style>
+/* =========================
+   “Steve Jobs militar” HUD
+   ========================= */
 :root{
-  --bg:#050709;
-  --panel:#0c1216;
-  --text:#e6f0f2;
-  --muted:#8fa3a8;
+  --bg0:#050709;
+  --bg1:#070b0f;
+  --panel:rgba(13,18,22,.72);
+  --panel2:rgba(8,12,15,.62);
+  --stroke:rgba(255,255,255,.09);
+  --stroke2:rgba(0,255,132,.22);
+
+  --text:#e7f1f3;
+  --muted:#92a6ab;
 
   --green:#00ff84;
   --amber:#ffb84d;
   --red:#ff3b3b;
+
+  --shadow: 0 20px 60px rgba(0,0,0,.55);
+  --r:18px;
+
+  --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --sans: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
 }
 
 *{box-sizing:border-box}
+html,body{height:100%}
 body{
   margin:0;
-  font-family:system-ui,Segoe UI,Roboto;
-  background:
-    radial-gradient(900px 500px at 20% 0%, rgba(0,255,132,.08), transparent 60%),
-    radial-gradient(800px 400px at 100% 20%, rgba(255,59,59,.05), transparent 60%),
-    var(--bg);
+  font-family:var(--sans);
   color:var(--text);
+  background: radial-gradient(900px 520px at 15% 0%, rgba(0,255,132,.12), transparent 60%),
+              radial-gradient(820px 420px at 100% 30%, rgba(255,59,59,.08), transparent 60%),
+              linear-gradient(180deg, var(--bg1), var(--bg0));
+  overflow-x:hidden;
+}
+
+/* Background “táctico” + scanlines */
+.bgFX{
+  position:fixed; inset:0;
+  pointer-events:none;
+  z-index:-1;
+}
+.bgFX::before{
+  content:"";
+  position:absolute; inset:-40px;
+  background:
+    radial-gradient(1000px 700px at 20% 10%, rgba(0,255,132,.10), transparent 55%),
+    radial-gradient(900px 600px at 85% 25%, rgba(255,184,77,.07), transparent 55%),
+    radial-gradient(900px 700px at 50% 90%, rgba(0,170,255,.05), transparent 55%);
+  filter: blur(0px);
+  opacity:.85;
+}
+.bgFX::after{
+  content:"";
+  position:absolute; inset:0;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,.05) 0px,
+      rgba(255,255,255,.05) 1px,
+      rgba(0,0,0,0) 3px,
+      rgba(0,0,0,0) 7px
+    );
+  mix-blend-mode:overlay;
+  opacity:.06;
+}
+
+/* Soft noise */
+.noise{
+  position:fixed; inset:0;
+  pointer-events:none;
+  z-index:-1;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.25'/%3E%3C/svg%3E");
+  opacity:.08;
+  mix-blend-mode:overlay;
 }
 
 .wrap{
-  max-width:1200px;
+  max-width:1240px;
   margin:auto;
-  padding:20px;
+  padding:22px;
 }
 
-/* ================= HEADER ================= */
-
-.header{
+/* ================= TOP BAR ================= */
+.topbar{
   display:flex;
-  gap:20px;
-  flex-wrap:wrap;
-  background:var(--panel);
-  border:1px solid rgba(255,255,255,.08);
-  border-radius:18px;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  margin-bottom:14px;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-width:240px;
+}
+.badge{
+  width:10px; height:10px;
+  border-radius:999px;
+  background:var(--green);
+  box-shadow:0 0 18px rgba(0,255,132,.55);
+}
+.brandTitle{
+  font-weight:900;
+  letter-spacing:.7px;
+  text-transform:uppercase;
+  font-size:13px;
+  color:rgba(231,241,243,.92);
+}
+.brandSub{
+  font-family:var(--mono);
+  font-size:11px;
+  color:rgba(146,166,171,.9);
+}
+
+.actions{
+  display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;
+}
+.btn{
+  appearance:none;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(0,0,0,.32);
+  color:var(--text);
+  padding:10px 12px;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:800;
+  letter-spacing:.3px;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  transition:transform .15s, box-shadow .15s, border-color .15s, background .15s;
+  user-select:none;
+}
+.btn:hover{
+  transform:translateY(-1px);
+  border-color:rgba(0,255,132,.30);
+  box-shadow:0 18px 40px rgba(0,0,0,.38), 0 0 0 1px rgba(0,255,132,.08) inset;
+}
+.btn:active{ transform:translateY(0px) scale(.99); }
+.btn.danger:hover{ border-color:rgba(255,59,59,.35); box-shadow:0 18px 40px rgba(0,0,0,.38), 0 0 0 1px rgba(255,59,59,.10) inset; }
+.kbd{
+  font-family:var(--mono);
+  font-size:11px;
+  opacity:.85;
+  padding:2px 6px;
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(0,0,0,.35);
+}
+
+/* ================= HEADER CARD ================= */
+.header{
+  position:relative;
+  background:linear-gradient(180deg, rgba(17,24,29,.72), rgba(10,14,17,.66));
+  border:1px solid var(--stroke);
+  border-radius:22px;
   padding:20px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+.header::before{
+  content:"";
+  position:absolute; inset:-2px;
+  background:
+    radial-gradient(900px 300px at 10% 0%, rgba(0,255,132,.13), transparent 60%),
+    radial-gradient(700px 300px at 80% 0%, rgba(255,184,77,.08), transparent 60%),
+    linear-gradient(90deg, rgba(0,255,132,.06), transparent 35%, rgba(255,59,59,.06));
+  opacity:.55;
+  pointer-events:none;
+}
+.header::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,.06), transparent 35%),
+    linear-gradient(225deg, rgba(0,255,132,.05), transparent 40%);
+  mix-blend-mode:overlay;
+  opacity:.25;
+  pointer-events:none;
 }
 
-.headerText{
-  flex:1 1 500px;
+.headerGrid{
+  position:relative;
+  display:grid;
+  grid-template-columns: 1.2fr .8fr;
+  gap:16px;
+  align-items:start;
+}
+@media(max-width:900px){
+  .headerGrid{ grid-template-columns:1fr; }
 }
 
-h1{
+.hTitle{
   margin:0;
   font-size:28px;
   text-transform:uppercase;
-  letter-spacing:.5px;
+  letter-spacing:.6px;
 }
-
-.subtitle{
-  margin-top:8px;
-  font-size:14px;
+.hMeta{
+  margin-top:10px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
   color:var(--muted);
+  font-size:13px;
 }
-
-/* ====== IMÁGENES DEBAJO DEL TÍTULO ====== */
+.pill{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 10px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(0,0,0,.22);
+}
+.dot{ width:7px; height:7px; border-radius:999px; background:var(--green); box-shadow:0 0 12px rgba(0,255,132,.5); }
+.dot.amber{ background:var(--amber); box-shadow:0 0 12px rgba(255,184,77,.45); }
+.dot.red{ background:var(--red); box-shadow:0 0 12px rgba(255,59,59,.45); }
 
 .heroImages{
-  margin-top:15px;
+  margin-top:14px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  max-width:520px;
+}
+.heroCard{
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(0,0,0,.35);
+  overflow:hidden;
+  position:relative;
+  transform:translateZ(0);
+  transition:transform .18s, box-shadow .18s, border-color .18s;
+}
+.heroCard:hover{
+  transform:translateY(-2px);
+  border-color:rgba(0,255,132,.28);
+  box-shadow:0 22px 45px rgba(0,0,0,.45), 0 0 0 1px rgba(0,255,132,.08) inset;
+}
+.heroCard .shine{
+  content:"";
+  position:absolute; inset:-60px -80px;
+  background:linear-gradient(115deg, transparent 35%, rgba(255,255,255,.08) 45%, transparent 55%);
+  transform:translateX(-40%);
+  opacity:.0;
+  transition:opacity .18s;
+}
+.heroCard:hover .shine{ opacity:.9; animation:shine 1.4s ease-in-out infinite; }
+@keyframes shine{
+  0%{ transform:translateX(-45%) rotate(0.001deg); }
+  60%{ transform:translateX(35%) rotate(0.001deg); }
+  100%{ transform:translateX(45%) rotate(0.001deg); }
+}
+
+.heroLogo{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:10px;
+}
+.heroLogo img{
+  height:64px;
+  width:auto;
+  max-width:92%;
+  object-fit:contain;
+  filter: drop-shadow(0 12px 22px rgba(0,0,0,.55));
+}
+
+.heroGun img{
+  width:100%;
+  height:240px;
+  object-fit:cover;
+  object-position:center 55%;
+  display:block;
+}
+
+/* ================= RIGHT SIDE: HUD TIMER ================= */
+.hud{
+  border-radius:18px;
+  border:1px solid rgba(0,255,132,.16);
+  background:linear-gradient(180deg, rgba(0,0,0,.50), rgba(0,0,0,.28));
+  padding:16px;
+  box-shadow:0 22px 45px rgba(0,0,0,.35);
+  position:relative;
+  overflow:hidden;
+}
+.hud::before{
+  content:"";
+  position:absolute; inset:-2px;
+  background:
+    radial-gradient(400px 240px at 20% 0%, rgba(0,255,132,.14), transparent 60%),
+    radial-gradient(320px 220px at 100% 40%, rgba(255,59,59,.10), transparent 65%);
+  opacity:.7;
+  pointer-events:none;
+}
+.hudHeader{
+  position:relative;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:10px;
+}
+.hudTitle{
+  font-weight:900;
+  letter-spacing:.6px;
+  text-transform:uppercase;
+  font-size:12px;
+  color:rgba(231,241,243,.92);
+}
+.hudHint{
+  font-family:var(--mono);
+  font-size:11px;
+  color:rgba(146,166,171,.92);
+}
+
+.hudMain{
+  position:relative;
+  margin-top:10px;
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:14px;
+  align-items:center;
+}
+@media(max-width:900px){
+  .hudMain{ grid-template-columns:1fr; }
+}
+
+.ringWrap{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.ring{
+  width:180px;
+  height:180px;
+  border-radius:999px;
+  position:relative;
+  display:grid;
+  place-items:center;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(0,0,0,.55) 0%, rgba(0,0,0,.65) 65%, rgba(0,0,0,.35) 100%);
+  border:1px solid rgba(255,255,255,.10);
+  box-shadow:0 20px 40px rgba(0,0,0,.45), 0 0 0 1px rgba(0,255,132,.06) inset;
+  overflow:hidden;
+}
+.ring::before{
+  content:"";
+  position:absolute; inset:12px;
+  border-radius:999px;
+  border:1px dashed rgba(0,255,132,.22);
+  opacity:.8;
+}
+.ring::after{
+  content:"";
+  position:absolute; inset:-2px;
+  background: conic-gradient(from 0deg, rgba(0,255,132,.0), rgba(0,255,132,.75), rgba(0,255,132,.0));
+  opacity:.15;
+  filter: blur(2px);
+  animation:spin 5.5s linear infinite;
+}
+@keyframes spin{ to{ transform:rotate(360deg); } }
+
+.ringSvg{
+  position:absolute; inset:0;
+  transform:rotate(-90deg);
+}
+.ringText{
+  position:relative;
+  text-align:center;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.bigTime{
+  font-family:var(--mono);
+  font-size:34px;
+  letter-spacing:2px;
+  font-weight:900;
+  color:var(--green);
+  text-shadow:0 0 18px rgba(0,255,132,.25);
+}
+.smallLabel{
+  font-family:var(--mono);
+  font-size:11px;
+  color:rgba(146,166,171,.92);
+  letter-spacing:.6px;
+  text-transform:uppercase;
+}
+.remaining{
+  font-size:14px;
+  font-weight:900;
+  letter-spacing:.3px;
+}
+.remaining span{
+  color:var(--green);
+}
+
+/* Segmented progress bar */
+.segWrap{
   display:flex;
   flex-direction:column;
   gap:10px;
 }
-
-.heroImages img{
-  width:100%;
-  max-width:420px;
-  border-radius:12px;
-  background:#111;
+.legend{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
 }
+.legend .pill{ padding:7px 10px; }
+.legend b{ font-family:var(--mono); }
 
-.heroImages .logo{
-  height:70px;
-  object-fit:contain;
-  padding:8px;
+.segmentBar{
+  display:grid;
+  grid-template-columns:repeat(20, 1fr);
+  gap:6px;
+  padding:10px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(0,0,0,.32);
 }
-
-.heroImages .gun{
-  height:240px;
-  object-fit:cover;
-  object-position:center;
-}
-
-/* ================= TIMER ================= */
-
-.timerBox{
-  margin-top:20px;
-  background:#000;
-  border-radius:14px;
-  padding:15px;
-  border:1px solid rgba(0,255,132,.25);
-}
-
-.timer{
-  font-family:monospace;
-  font-size:42px;
-  color:var(--green);
-  text-align:center;
-  letter-spacing:2px;
-}
-
-.bar{
-  margin-top:12px;
+.segment{
   height:10px;
-  background:#111;
-  border-radius:999px;
+  border-radius:6px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.08);
+  transition:transform .15s, filter .15s, background .15s;
+}
+.segment.on{
+  background:linear-gradient(90deg, rgba(0,255,132,.85), rgba(0,255,132,.35));
+  border-color:rgba(0,255,132,.28);
+  filter: drop-shadow(0 0 10px rgba(0,255,132,.18));
+}
+.segmentBar:hover .segment.on{ transform:translateY(-1px); }
+
+.hudFooter{
+  margin-top:12px;
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+  color:rgba(146,166,171,.92);
+  font-size:12px;
+}
+.hudFooter .mono{ font-family:var(--mono); }
+
+/* ================= GRID PANEL ================= */
+.panel{
+  margin-top:16px;
+  background:linear-gradient(180deg, rgba(13,18,22,.72), rgba(8,12,15,.66));
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:22px;
+  padding:18px;
+  box-shadow:var(--shadow);
+  position:relative;
   overflow:hidden;
 }
-
-.bar i{
-  display:block;
-  height:100%;
-  width:100%;
-  background:linear-gradient(90deg,var(--green),#00ff84);
-  transition:width .3s;
+.panel::before{
+  content:"";
+  position:absolute; inset:-2px;
+  background:
+    radial-gradient(800px 260px at 0% 0%, rgba(0,255,132,.10), transparent 55%),
+    radial-gradient(700px 260px at 100% 0%, rgba(255,184,77,.07), transparent 55%);
+  opacity:.6;
+  pointer-events:none;
 }
 
-/* ================= GRID ================= */
+.controls{
+  position:relative;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:12px;
+}
+.search{
+  flex:1 1 260px;
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+.input{
+  width:100%;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(0,0,0,.35);
+  color:var(--text);
+  padding:12px 12px;
+  outline:none;
+  transition:border-color .15s, box-shadow .15s, transform .15s;
+}
+.input:focus{
+  border-color:rgba(0,255,132,.35);
+  box-shadow:0 0 0 4px rgba(0,255,132,.10);
+}
 
-.panel{
-  margin-top:25px;
-  background:var(--panel);
-  border-radius:18px;
-  padding:20px;
-  border:1px solid rgba(255,255,255,.08);
+.filters{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.chip{
+  border-radius:999px;
+  padding:10px 12px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(0,0,0,.28);
+  color:var(--text);
+  cursor:pointer;
+  font-weight:900;
+  font-size:12px;
+  letter-spacing:.3px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  user-select:none;
+  transition:transform .15s, border-color .15s, box-shadow .15s;
+}
+.chip:hover{
+  transform:translateY(-1px);
+  border-color:rgba(0,255,132,.28);
+  box-shadow:0 16px 32px rgba(0,0,0,.35);
+}
+.chip.active{
+  border-color:rgba(0,255,132,.38);
+  box-shadow:0 0 0 1px rgba(0,255,132,.10) inset, 0 18px 36px rgba(0,0,0,.35);
 }
 
 .grid{
+  position:relative;
   display:grid;
-  grid-template-columns:repeat(5,1fr);
+  grid-template-columns:repeat(10, 1fr);
   gap:10px;
 }
-
-@media(max-width:600px){
-  .grid{grid-template-columns:repeat(4,1fr)}
-}
+@media(max-width:900px){ .grid{ grid-template-columns:repeat(8, 1fr); } }
+@media(max-width:600px){ .grid{ grid-template-columns:repeat(5, 1fr); } }
 
 .cell{
-  padding:14px;
-  background:#111;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,.1);
+  position:relative;
+  padding:12px 10px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(0,0,0,.35);
   cursor:pointer;
   text-align:center;
-  font-weight:800;
+  font-weight:950;
   letter-spacing:1px;
+  transition:transform .15s, box-shadow .15s, border-color .15s, background .15s, filter .15s;
+  user-select:none;
+  overflow:hidden;
+}
+.cell::before{
+  content:"";
+  position:absolute;
+  inset:-60% -60%;
+  background:radial-gradient(circle at 30% 20%, rgba(255,255,255,.12), transparent 45%);
+  opacity:.15;
+  transform:translateZ(0);
+}
+.cell:hover{
+  transform:translateY(-2px);
+  border-color:rgba(0,255,132,.22);
+  box-shadow:0 18px 40px rgba(0,0,0,.40), 0 0 0 1px rgba(0,255,132,.06) inset;
+  filter:saturate(1.1);
+}
+.cell:active{ transform:translateY(0px) scale(.99); }
+
+.cell.ok{ border-color:rgba(0,255,132,.26); }
+.cell.warn{ border-color:rgba(255,184,77,.26); }
+.cell.bad{
+  border-color:rgba(255,59,59,.32);
+  background:rgba(255,59,59,.10);
 }
 
-.cell.ok{border-color:rgba(0,255,132,.3)}
-.cell.warn{border-color:rgba(255,184,77,.3)}
-.cell.bad{
-  border-color:rgba(255,59,59,.4);
-  background:rgba(255,0,0,.1);
+/* corner status notch */
+.cell .notch{
+  position:absolute;
+  top:0; right:0;
+  width:20px; height:20px;
+  clip-path:polygon(0 0, 100% 0, 100% 100%);
+  background:rgba(255,255,255,.12);
+}
+.cell.ok .notch{ background:rgba(0,255,132,.26); }
+.cell.warn .notch{ background:rgba(255,184,77,.30); }
+.cell.bad .notch{ background:rgba(255,59,59,.35); }
+
+/* tooltip */
+.tip{
+  position:absolute;
+  left:50%;
+  bottom:calc(100% + 10px);
+  transform:translateX(-50%);
+  width:max-content;
+  max-width:240px;
+  padding:10px 10px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(0,0,0,.60);
+  box-shadow:0 16px 34px rgba(0,0,0,.45);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .12s, transform .12s;
+  font-size:12px;
+  color:rgba(231,241,243,.95);
+}
+.tip .m{ color:rgba(146,166,171,.95); font-family:var(--mono); font-size:11px; }
+.cell:hover .tip{
+  opacity:1;
+  transform:translateX(-50%) translateY(-2px);
 }
 
 /* ================= MODAL ================= */
-
 .modal{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.75);
+  background:rgba(0,0,0,.72);
   display:none;
   align-items:center;
   justify-content:center;
+  padding:18px;
+  z-index:50;
 }
-
 .modal.show{display:flex}
-
 .modalBox{
-  background:#0d1316;
-  padding:20px;
+  width:100%;
+  max-width:560px;
+  border-radius:20px;
+  border:1px solid rgba(255,255,255,.10);
+  background:linear-gradient(180deg, rgba(14,18,22,.88), rgba(7,10,12,.82));
+  box-shadow:0 30px 80px rgba(0,0,0,.65);
+  overflow:hidden;
+  position:relative;
+}
+.modalBox::before{
+  content:"";
+  position:absolute; inset:-2px;
+  background:radial-gradient(600px 220px at 20% 0%, rgba(0,255,132,.14), transparent 60%);
+  opacity:.6;
+  pointer-events:none;
+}
+.modalHead{
+  position:relative;
+  padding:16px 16px 12px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  border-bottom:1px solid rgba(255,255,255,.10);
+}
+.modalTitle{
+  margin:0;
+  font-weight:950;
+  letter-spacing:.6px;
+  text-transform:uppercase;
+  font-size:14px;
+}
+.modalSub{
+  margin-top:6px;
+  font-family:var(--mono);
+  font-size:11px;
+  color:rgba(146,166,171,.95);
+}
+.modalBody{
+  position:relative;
+  padding:14px 16px 16px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+@media(max-width:520px){
+  .modalBody{ grid-template-columns:1fr; }
+}
+.field label{
+  display:block;
+  font-size:12px;
+  color:rgba(146,166,171,.95);
+  margin-bottom:6px;
+  letter-spacing:.2px;
+}
+.field input, .field select{
+  width:100%;
+  padding:12px 12px;
   border-radius:14px;
-  width:90%;
-  max-width:500px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(0,0,0,.40);
+  color:var(--text);
+  outline:none;
+  transition:border-color .15s, box-shadow .15s;
+}
+.field input:focus, .field select:focus{
+  border-color:rgba(0,255,132,.35);
+  box-shadow:0 0 0 4px rgba(0,255,132,.10);
 }
 
-input,select{
-  width:100%;
-  margin-top:8px;
-  padding:10px;
-  border-radius:8px;
-  border:1px solid rgba(255,255,255,.1);
-  background:#000;
-  color:white;
+.modalActions{
+  position:relative;
+  padding:14px 16px 16px;
+  display:flex;
+  gap:10px;
+  border-top:1px solid rgba(255,255,255,.10);
+  flex-wrap:wrap;
+}
+.modalActions .btn{
+  flex:1 1 160px;
+  justify-content:center;
+}
+.btn.primary{
+  background:linear-gradient(180deg, rgba(0,255,132,.95), rgba(0,180,92,.90));
+  color:#04100a;
+  border-color:rgba(0,255,132,.30);
+}
+.btn.primary:hover{ box-shadow:0 18px 46px rgba(0,255,132,.10), 0 22px 50px rgba(0,0,0,.40); }
+.btn.warn{
+  background:linear-gradient(180deg, rgba(255,184,77,.95), rgba(210,135,40,.92));
+  color:#1a0f02;
+  border-color:rgba(255,184,77,.28);
+}
+.btn.danger{
+  background:linear-gradient(180deg, rgba(255,59,59,.92), rgba(190,35,35,.92));
+  color:#160202;
+  border-color:rgba(255,59,59,.28);
 }
 
-button{
-  margin-top:12px;
-  padding:10px;
-  width:100%;
-  border:none;
-  border-radius:8px;
-  font-weight:800;
-  cursor:pointer;
+/* Toast */
+.toast{
+  position:fixed;
+  bottom:18px;
+  left:50%;
+  transform:translateX(-50%);
+  background:rgba(0,0,0,.62);
+  border:1px solid rgba(255,255,255,.12);
+  padding:10px 12px;
+  border-radius:14px;
+  font-family:var(--mono);
+  font-size:12px;
+  color:rgba(231,241,243,.95);
+  box-shadow:0 18px 45px rgba(0,0,0,.45);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .18s, transform .18s;
+  z-index:60;
 }
-
-.save{background:var(--green)}
-.danger{background:var(--red)}
+.toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(-2px);
+}
 </style>
 </head>
 
 <body>
+<div class="bgFX"></div>
+<div class="noise"></div>
+
 <div class="wrap">
 
-  <div class="header">
-
-    <div class="headerText">
-      <h1>Sorteo Sp Instructores : Tanfoglio Combat</h1>
-
-      <!-- IMÁGENES EN RAÍZ: PRIMERO LOGO, DESPUÉS PISTOLA -->
-      <div class="heroImages">
-        <img src="2150201.png" class="logo" alt="Logo">
-        <img src="IMG_6670 (2).png" class="gun" alt="Tanfoglio Combat">
-      </div>
-
-      <div class="subtitle">
-        Grilla 00–99 • modo demo • estética táctica militar.
-      </div>
-
-      <div class="timerBox">
-        <div class="timer" id="timer">99:99</div>
-        <div class="bar"><i id="bar"></i></div>
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="brand">
+      <div class="badge"></div>
+      <div>
+        <div class="brandTitle">SP INSTRUCTORES // SORTEO CONTROL</div>
+        <div class="brandSub">HUD v1.0 — demo local (persistencia en tu navegador)</div>
       </div>
     </div>
 
+    <div class="actions">
+      <button class="btn" id="btnExport" title="Exporta JSON (demo)">
+        ⤓ Exportar <span class="kbd">JSON</span>
+      </button>
+      <button class="btn" id="btnImport" title="Importa JSON (demo)">
+        ⤒ Importar <span class="kbd">JSON</span>
+      </button>
+      <button class="btn danger" id="btnReset" title="Resetea todo (demo)">
+        ⟲ Reset <span class="kbd">⌘/Ctrl</span>+<span class="kbd">R</span>
+      </button>
+    </div>
   </div>
 
+  <!-- HEADER -->
+  <div class="header">
+    <div class="headerGrid">
+      <div>
+        <h1 class="hTitle">Sorteo SP Instructores : Tanfoglio Combat</h1>
+
+        <div class="heroImages">
+          <!-- En la raíz del repo: primero el logo, después la pistola -->
+          <div class="heroCard heroLogo">
+            <div class="shine"></div>
+            <img src="2150201.png" alt="Logo Tanfoglio">
+          </div>
+
+          <div class="heroCard heroGun">
+            <div class="shine"></div>
+            <img src="IMG_6670 (2).png" alt="Tanfoglio Combat">
+          </div>
+        </div>
+
+        <div class="hMeta">
+          <div class="pill"><span class="dot"></span> Disponible</div>
+          <div class="pill"><span class="dot amber"></span> Reservado</div>
+          <div class="pill"><span class="dot red"></span> Vendido</div>
+          <div class="pill" title="Atajos">
+            <span class="dot" style="background:rgba(255,255,255,.35); box-shadow:none"></span>
+            <span style="font-family:var(--mono)">Click número → editar • Esc → cerrar</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- HUD -->
+      <div class="hud">
+        <div class="hudHeader">
+          <div>
+            <div class="hudTitle">ARMED COUNTDOWN</div>
+            <div class="hudHint">representación visual de cupos restantes</div>
+          </div>
+          <div class="hudHint" id="hudStamp">SYNC: LOCAL</div>
+        </div>
+
+        <div class="hudMain">
+          <div class="ringWrap">
+            <div class="ring" aria-hidden="true">
+              <svg class="ringSvg" width="180" height="180" viewBox="0 0 180 180">
+                <circle cx="90" cy="90" r="74" fill="none" stroke="rgba(255,255,255,.10)" stroke-width="10"></circle>
+                <circle id="ringProg" cx="90" cy="90" r="74" fill="none" stroke="rgba(0,255,132,.75)" stroke-width="10"
+                        stroke-linecap="round" stroke-dasharray="465" stroke-dashoffset="0"></circle>
+              </svg>
+
+              <div class="ringText">
+                <div class="bigTime" id="timer">--:--</div>
+                <div class="smallLabel">slots remaining</div>
+                <div class="remaining"><span id="remaining">100</span> / 100</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="segWrap">
+            <div class="legend">
+              <div class="pill"><span class="dot"></span> <b id="cOk">0</b> OK</div>
+              <div class="pill"><span class="dot amber"></span> <b id="cWarn">0</b> RES</div>
+              <div class="pill"><span class="dot red"></span> <b id="cBad">0</b> SOLD</div>
+            </div>
+
+            <div class="segmentBar" id="segBar" title="20 segmentos = 100%"></div>
+
+            <div class="hudFooter">
+              <div>Estado: <span class="mono" id="hudState">ARMED</span></div>
+              <div class="mono">GRILLA 00–99</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GRID PANEL -->
   <div class="panel">
+    <div class="controls">
+      <div class="search">
+        <input class="input" id="q" placeholder="Buscar por número (ej: 07) o por nombre/teléfono…" />
+      </div>
+
+      <div class="filters" role="tablist" aria-label="Filtros">
+        <div class="chip active" data-filter="all"><span class="dot" style="background:rgba(255,255,255,.35); box-shadow:none"></span> Todos</div>
+        <div class="chip" data-filter="ok"><span class="dot"></span> Disponibles</div>
+        <div class="chip" data-filter="warn"><span class="dot amber"></span> Reservados</div>
+        <div class="chip" data-filter="bad"><span class="dot red"></span> Vendidos</div>
+      </div>
+    </div>
+
     <div class="grid" id="grid"></div>
   </div>
 
 </div>
 
-<div class="modal" id="modal">
+<!-- MODAL -->
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
   <div class="modalBox">
-    <h3 id="modalTitle"></h3>
-    <input id="name" placeholder="Nombre">
-    <input id="phone" placeholder="Teléfono">
-    <select id="status">
-      <option value="ok">Disponible</option>
-      <option value="warn">Reservado</option>
-      <option value="bad">Vendido</option>
-    </select>
-    <button class="save" onclick="save()">Guardar</button>
-    <button class="danger" onclick="closeModal()">Cerrar</button>
+    <div class="modalHead">
+      <div>
+        <h3 class="modalTitle" id="modalTitle">Número --</h3>
+        <div class="modalSub" id="modalSub">Editar estado y datos</div>
+      </div>
+      <button class="btn" onclick="closeModal()" title="Cerrar (Esc)">✕ Cerrar <span class="kbd">Esc</span></button>
+    </div>
+
+    <div class="modalBody">
+      <div class="field">
+        <label>Nombre</label>
+        <input id="name" placeholder="Nombre y apellido" autocomplete="off">
+      </div>
+      <div class="field">
+        <label>Teléfono</label>
+        <input id="phone" placeholder="Ej: 11 2345 6789" autocomplete="off">
+      </div>
+      <div class="field" style="grid-column:1 / -1">
+        <label>Estado</label>
+        <select id="status">
+          <option value="ok">Disponible</option>
+          <option value="warn">Reservado</option>
+          <option value="bad">Vendido</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="modalActions">
+      <button class="btn primary" onclick="save()">Guardar</button>
+      <button class="btn warn" onclick="markReserved()">Marcar Reservado</button>
+      <button class="btn danger" onclick="markSold()">Marcar Vendido</button>
+    </div>
   </div>
 </div>
 
+<div class="toast" id="toast">OK</div>
+
 <script>
-const grid = document.getElementById("grid")
-const timer = document.getElementById("timer")
-const bar = document.getElementById("bar")
-const modal = document.getElementById("modal")
-const modalTitle = document.getElementById("modalTitle")
+/* =========================
+   Estado + Persistencia
+   ========================= */
+const LS_KEY = "sp_sorteo_state_v1";
 
-let state = []
-let selected = null
+const grid = document.getElementById("grid");
+const timerEl = document.getElementById("timer");
+const remainingEl = document.getElementById("remaining");
+const ringProg = document.getElementById("ringProg");
+const segBar = document.getElementById("segBar");
 
-for(let i=0;i<100;i++){
-  state.push({number:String(i).padStart(2,"0"),status:"ok",name:"",phone:""})
+const cOk = document.getElementById("cOk");
+const cWarn = document.getElementById("cWarn");
+const cBad = document.getElementById("cBad");
+const hudState = document.getElementById("hudState");
+const hudStamp = document.getElementById("hudStamp");
+
+const modal = document.getElementById("modal");
+const modalTitle = document.getElementById("modalTitle");
+const modalSub = document.getElementById("modalSub");
+
+const q = document.getElementById("q");
+
+const btnReset = document.getElementById("btnReset");
+const btnExport = document.getElementById("btnExport");
+const btnImport = document.getElementById("btnImport");
+
+const toast = document.getElementById("toast");
+
+let state = [];
+let selected = null;
+let filter = "all";
+
+function pad2(n){ return String(n).padStart(2,"0"); }
+
+function defaultState(){
+  const s = [];
+  for(let i=0;i<100;i++){
+    s.push({ number: pad2(i), status:"ok", name:"", phone:"" });
+  }
+  return s;
 }
 
-function render(){
-  grid.innerHTML=""
-  let available = state.filter(n=>n.status==="ok").length
-
-  state.forEach(n=>{
-    const div=document.createElement("div")
-    div.className="cell "+n.status
-    div.textContent=n.number
-    div.onclick=()=>openModal(n.number)
-    grid.appendChild(div)
-  })
-
-  const units = Math.floor(available/100*9999)
-  const mm = String(Math.floor(units/100)).padStart(2,"0")
-  const ss = String(units%100).padStart(2,"0")
-  timer.textContent=mm+":"+ss
-  bar.style.width=(available)+"%"
-
-  if(available===0){
-    timer.style.color="var(--red)"
-  }else{
-    timer.style.color="var(--green)"
+function load(){
+  try{
+    const raw = localStorage.getItem(LS_KEY);
+    if(!raw) return defaultState();
+    const parsed = JSON.parse(raw);
+    if(!Array.isArray(parsed) || parsed.length !== 100) return defaultState();
+    return parsed.map((x,i)=>({
+      number: pad2(i),
+      status: (x.status==="ok"||x.status==="warn"||x.status==="bad") ? x.status : "ok",
+      name: String(x.name||""),
+      phone: String(x.phone||"")
+    }));
+  }catch(e){
+    return defaultState();
   }
 }
 
+function persist(){
+  localStorage.setItem(LS_KEY, JSON.stringify(state));
+  hudStamp.textContent = "SYNC: LOCAL · " + new Date().toLocaleTimeString("es-AR", {hour:"2-digit", minute:"2-digit", second:"2-digit"});
+}
+
+/* =========================
+   HUD / Timer visual
+   ========================= */
+function updateHud(){
+  const ok = state.filter(x=>x.status==="ok").length;
+  const warn = state.filter(x=>x.status==="warn").length;
+  const bad = state.filter(x=>x.status==="bad").length;
+
+  cOk.textContent = ok;
+  cWarn.textContent = warn;
+  cBad.textContent = bad;
+
+  remainingEl.textContent = ok;
+
+  // “Countdown” estilizado: mm:ss basado en % restante (estético, no real)
+  // 100 -> 12:00, 0 -> 00:00
+  const totalSeconds = Math.round((ok/100) * 12 * 60);
+  const mm = String(Math.floor(totalSeconds/60)).padStart(2,"0");
+  const ss = String(totalSeconds%60).padStart(2,"0");
+  timerEl.textContent = `${mm}:${ss}`;
+
+  // Ring progress
+  const CIRC = 465; // approx circumference for r=74 (2*pi*74=465)
+  const pct = ok / 100; // 0..1
+  ringProg.style.stroke = ok===0 ? "rgba(255,59,59,.85)" : ok<15 ? "rgba(255,184,77,.90)" : "rgba(0,255,132,.75)";
+  ringProg.style.strokeDasharray = CIRC;
+  ringProg.style.strokeDashoffset = (1 - pct) * CIRC;
+
+  // Segmented bar (20 segments = 100%)
+  segBar.innerHTML = "";
+  const segments = 20;
+  const on = Math.round(pct * segments);
+  for(let i=0;i<segments;i++){
+    const d = document.createElement("div");
+    d.className = "segment" + (i < on ? " on" : "");
+    segBar.appendChild(d);
+  }
+
+  if(ok===0){
+    hudState.textContent = "LOCKED";
+    hudState.style.color = "var(--red)";
+  }else if(ok<15){
+    hudState.textContent = "LOW STOCK";
+    hudState.style.color = "var(--amber)";
+  }else{
+    hudState.textContent = "ARMED";
+    hudState.style.color = "var(--green)";
+  }
+}
+
+/* =========================
+   Render grid + filtros
+   ========================= */
+function matchesQuery(item, query){
+  if(!query) return true;
+  query = query.trim().toLowerCase();
+  return (
+    item.number.includes(query) ||
+    (item.name||"").toLowerCase().includes(query) ||
+    (item.phone||"").toLowerCase().includes(query)
+  );
+}
+
+function passesFilter(item){
+  if(filter==="all") return true;
+  return item.status === filter;
+}
+
+function statusLabel(st){
+  if(st==="ok") return "Disponible";
+  if(st==="warn") return "Reservado";
+  return "Vendido";
+}
+
+function render(){
+  grid.innerHTML = "";
+
+  const query = q.value || "";
+  const list = state.filter(x=>passesFilter(x) && matchesQuery(x, query));
+
+  list.forEach(n=>{
+    const div = document.createElement("div");
+    div.className = "cell " + n.status;
+    div.innerHTML = `
+      <div class="notch"></div>
+      ${n.number}
+      <div class="tip">
+        <div><b>N° ${n.number}</b> — ${statusLabel(n.status)}</div>
+        <div class="m">${n.name ? n.name : "Sin nombre"}${n.phone ? " · " + n.phone : ""}</div>
+      </div>
+    `;
+    div.onclick = ()=>openModal(n.number);
+    grid.appendChild(div);
+  });
+
+  updateHud();
+}
+
+/* =========================
+   Modal actions
+   ========================= */
 function openModal(num){
-  selected=state.find(n=>n.number===num)
-  modalTitle.textContent="Número "+num
-  document.getElementById("name").value=selected.name
-  document.getElementById("phone").value=selected.phone
-  document.getElementById("status").value=selected.status
-  modal.classList.add("show")
+  selected = state.find(n=>n.number===num);
+  modalTitle.textContent = `Número ${num}`;
+  modalSub.textContent = `Estado actual: ${statusLabel(selected.status)}`;
+  document.getElementById("name").value = selected.name;
+  document.getElementById("phone").value = selected.phone;
+  document.getElementById("status").value = selected.status;
+  modal.classList.add("show");
 }
 
 function closeModal(){
-  modal.classList.remove("show")
+  modal.classList.remove("show");
+  selected = null;
 }
 
 function save(){
-  selected.name=document.getElementById("name").value
-  selected.phone=document.getElementById("phone").value
-  selected.status=document.getElementById("status").value
-  closeModal()
-  render()
+  if(!selected) return;
+  selected.name = document.getElementById("name").value.trim();
+  selected.phone = document.getElementById("phone").value.trim();
+  selected.status = document.getElementById("status").value;
+  persist();
+  render();
+  closeModal();
+  pop("Guardado ✓");
 }
 
-render()
+function markReserved(){
+  document.getElementById("status").value = "warn";
+  save();
+}
+function markSold(){
+  document.getElementById("status").value = "bad";
+  save();
+}
+
+/* =========================
+   Toast
+   ========================= */
+let toastT = null;
+function pop(msg){
+  toast.textContent = msg;
+  toast.classList.add("show");
+  clearTimeout(toastT);
+  toastT = setTimeout(()=>toast.classList.remove("show"), 1200);
+}
+
+/* =========================
+   Filters UI
+   ========================= */
+document.querySelectorAll(".chip").forEach(ch=>{
+  ch.addEventListener("click", ()=>{
+    document.querySelectorAll(".chip").forEach(x=>x.classList.remove("active"));
+    ch.classList.add("active");
+    filter = ch.dataset.filter;
+    render();
+  });
+});
+
+q.addEventListener("input", ()=>render());
+
+/* Esc para cerrar modal */
+window.addEventListener("keydown", (e)=>{
+  if(e.key === "Escape") closeModal();
+});
+
+/* =========================
+   Export / Import / Reset
+   ========================= */
+btnReset.addEventListener("click", ()=>{
+  if(confirm("¿Resetear toda la grilla (00–99) a Disponible?")){
+    state = defaultState();
+    persist();
+    render();
+    pop("Reset OK");
+  }
+});
+
+btnExport.addEventListener("click", ()=>{
+  const blob = new Blob([JSON.stringify(state, null, 2)], {type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "sorteo_state.json";
+  a.click();
+  URL.revokeObjectURL(a.href);
+  pop("Exportado");
+});
+
+btnImport.addEventListener("click", async ()=>{
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = "application/json";
+  input.onchange = async () => {
+    const file = input.files?.[0];
+    if(!file) return;
+    try{
+      const text = await file.text();
+      const parsed = JSON.parse(text);
+      if(!Array.isArray(parsed) || parsed.length !== 100) throw new Error("Formato inválido");
+      state = parsed.map((x,i)=>({
+        number: pad2(i),
+        status: (x.status==="ok"||x.status==="warn"||x.status==="bad") ? x.status : "ok",
+        name: String(x.name||""),
+        phone: String(x.phone||"")
+      }));
+      persist();
+      render();
+      pop("Importado ✓");
+    }catch(err){
+      alert("No pude importar ese JSON. Asegurate que sea un array de 100 items.");
+    }
+  };
+  input.click();
+});
+
+/* =========================
+   Init
+   ========================= */
+state = load();
+persist();
+render();
 </script>
 
 </body>
