@@ -907,10 +907,15 @@ async function apiGetState(){
 }
 
 async function apiReserve(payload){
+  const form = new URLSearchParams();
+  Object.entries(payload).forEach(([k,v]) => form.set(k, String(v ?? "")));
+
   const res = await fetch(API_URL, {
     method: "POST",
-    body: JSON.stringify(payload) // sin headers
+    headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+    body: form.toString()
   });
+
   const data = await res.json().catch(()=> ({}));
   if(!res.ok || !data.ok) throw new Error(data.message || "No se pudo reservar.");
   return data;
