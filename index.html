@@ -6,17 +6,10 @@
 <title>Sorteo SP Instructores — Tanfoglio Combat</title>
 
 <style>
-/* =========================
-   “Steve Jobs militar” HUD
-   ========================= */
 :root{
   --bg0:#050709;
   --bg1:#070b0f;
   --panel:rgba(13,18,22,.72);
-  --panel2:rgba(8,12,15,.62);
-  --stroke:rgba(255,255,255,.09);
-  --stroke2:rgba(0,255,132,.22);
-
   --text:#e7f1f3;
   --muted:#92a6ab;
 
@@ -25,8 +18,6 @@
   --red:#ff3b3b;
 
   --shadow: 0 20px 60px rgba(0,0,0,.55);
-  --r:18px;
-
   --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --sans: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
 }
@@ -37,26 +28,35 @@ body{
   margin:0;
   font-family:var(--sans);
   color:var(--text);
-  background: radial-gradient(900px 520px at 15% 0%, rgba(0,255,132,.12), transparent 60%),
-              radial-gradient(820px 420px at 100% 30%, rgba(255,59,59,.08), transparent 60%),
-              linear-gradient(180deg, var(--bg1), var(--bg0));
+  background: linear-gradient(180deg, var(--bg1), var(--bg0));
   overflow-x:hidden;
 }
 
-/* Background “táctico” + scanlines */
+/* Fondo con foto blur */
+.bgPhoto{
+  position:fixed;
+  inset:0;
+  z-index:-3;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.78)),
+    url("tirodinamico.jpg") center/cover no-repeat;
+  filter: blur(16px) saturate(1.05);
+  transform: scale(1.08);
+}
+
+/* FX + scanlines */
 .bgFX{
   position:fixed; inset:0;
   pointer-events:none;
-  z-index:-1;
+  z-index:-2;
 }
 .bgFX::before{
   content:"";
   position:absolute; inset:-40px;
   background:
-    radial-gradient(1000px 700px at 20% 10%, rgba(0,255,132,.10), transparent 55%),
-    radial-gradient(900px 600px at 85% 25%, rgba(255,184,77,.07), transparent 55%),
-    radial-gradient(900px 700px at 50% 90%, rgba(0,170,255,.05), transparent 55%);
-  filter: blur(0px);
+    radial-gradient(1000px 700px at 20% 10%, rgba(0,255,132,.12), transparent 55%),
+    radial-gradient(900px 600px at 85% 25%, rgba(255,184,77,.08), transparent 55%),
+    radial-gradient(900px 700px at 50% 90%, rgba(0,170,255,.06), transparent 55%);
   opacity:.85;
 }
 .bgFX::after{
@@ -90,7 +90,6 @@ body{
   padding:22px;
 }
 
-/* ================= TOP BAR ================= */
 .topbar{
   display:flex;
   align-items:center;
@@ -102,7 +101,6 @@ body{
   display:flex;
   align-items:center;
   gap:10px;
-  min-width:240px;
 }
 .badge{
   width:10px; height:10px;
@@ -123,47 +121,10 @@ body{
   color:rgba(146,166,171,.9);
 }
 
-.actions{
-  display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;
-}
-.btn{
-  appearance:none;
-  border:1px solid rgba(255,255,255,.10);
-  background:rgba(0,0,0,.32);
-  color:var(--text);
-  padding:10px 12px;
-  border-radius:12px;
-  cursor:pointer;
-  font-weight:800;
-  letter-spacing:.3px;
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  transition:transform .15s, box-shadow .15s, border-color .15s, background .15s;
-  user-select:none;
-}
-.btn:hover{
-  transform:translateY(-1px);
-  border-color:rgba(0,255,132,.30);
-  box-shadow:0 18px 40px rgba(0,0,0,.38), 0 0 0 1px rgba(0,255,132,.08) inset;
-}
-.btn:active{ transform:translateY(0px) scale(.99); }
-.btn.danger:hover{ border-color:rgba(255,59,59,.35); box-shadow:0 18px 40px rgba(0,0,0,.38), 0 0 0 1px rgba(255,59,59,.10) inset; }
-.kbd{
-  font-family:var(--mono);
-  font-size:11px;
-  opacity:.85;
-  padding:2px 6px;
-  border-radius:8px;
-  border:1px solid rgba(255,255,255,.12);
-  background:rgba(0,0,0,.35);
-}
-
-/* ================= HEADER CARD ================= */
 .header{
   position:relative;
   background:linear-gradient(180deg, rgba(17,24,29,.72), rgba(10,14,17,.66));
-  border:1px solid var(--stroke);
+  border:1px solid rgba(255,255,255,.09);
   border-radius:22px;
   padding:20px;
   box-shadow:var(--shadow);
@@ -179,18 +140,6 @@ body{
   opacity:.55;
   pointer-events:none;
 }
-.header::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:
-    linear-gradient(135deg, rgba(255,255,255,.06), transparent 35%),
-    linear-gradient(225deg, rgba(0,255,132,.05), transparent 40%);
-  mix-blend-mode:overlay;
-  opacity:.25;
-  pointer-events:none;
-}
-
 .headerGrid{
   position:relative;
   display:grid;
@@ -198,9 +147,7 @@ body{
   gap:16px;
   align-items:start;
 }
-@media(max-width:900px){
-  .headerGrid{ grid-template-columns:1fr; }
-}
+@media(max-width:900px){ .headerGrid{ grid-template-columns:1fr; } }
 
 .hTitle{
   margin:0;
@@ -208,27 +155,6 @@ body{
   text-transform:uppercase;
   letter-spacing:.6px;
 }
-.hMeta{
-  margin-top:10px;
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  align-items:center;
-  color:var(--muted);
-  font-size:13px;
-}
-.pill{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  padding:8px 10px;
-  border-radius:999px;
-  border:1px solid rgba(255,255,255,.10);
-  background:rgba(0,0,0,.22);
-}
-.dot{ width:7px; height:7px; border-radius:999px; background:var(--green); box-shadow:0 0 12px rgba(0,255,132,.5); }
-.dot.amber{ background:var(--amber); box-shadow:0 0 12px rgba(255,184,77,.45); }
-.dot.red{ background:var(--red); box-shadow:0 0 12px rgba(255,59,59,.45); }
 
 .heroImages{
   margin-top:14px;
@@ -252,11 +178,10 @@ body{
   box-shadow:0 22px 45px rgba(0,0,0,.45), 0 0 0 1px rgba(0,255,132,.08) inset;
 }
 .heroCard .shine{
-  content:"";
   position:absolute; inset:-60px -80px;
   background:linear-gradient(115deg, transparent 35%, rgba(255,255,255,.08) 45%, transparent 55%);
   transform:translateX(-40%);
-  opacity:.0;
+  opacity:0;
   transition:opacity .18s;
 }
 .heroCard:hover .shine{ opacity:.9; animation:shine 1.4s ease-in-out infinite; }
@@ -279,7 +204,6 @@ body{
   object-fit:contain;
   filter: drop-shadow(0 12px 22px rgba(0,0,0,.55));
 }
-
 .heroGun img{
   width:100%;
   height:240px;
@@ -288,7 +212,28 @@ body{
   display:block;
 }
 
-/* ================= RIGHT SIDE: HUD TIMER ================= */
+.hMeta{
+  margin-top:10px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+  color:var(--muted);
+  font-size:13px;
+}
+.pill{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 10px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(0,0,0,.22);
+}
+.dot{ width:7px; height:7px; border-radius:999px; background:var(--green); box-shadow:0 0 12px rgba(0,255,132,.5); }
+.dot.amber{ background:var(--amber); box-shadow:0 0 12px rgba(255,184,77,.45); }
+.dot.red{ background:var(--red); box-shadow:0 0 12px rgba(255,59,59,.45); }
+
 .hud{
   border-radius:18px;
   border:1px solid rgba(0,255,132,.16);
@@ -326,7 +271,6 @@ body{
   font-size:11px;
   color:rgba(146,166,171,.92);
 }
-
 .hudMain{
   position:relative;
   margin-top:10px;
@@ -335,24 +279,15 @@ body{
   gap:14px;
   align-items:center;
 }
-@media(max-width:900px){
-  .hudMain{ grid-template-columns:1fr; }
-}
+@media(max-width:900px){ .hudMain{ grid-template-columns:1fr; } }
 
-.ringWrap{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
+.ringWrap{ display:flex; align-items:center; justify-content:center; }
 .ring{
-  width:180px;
-  height:180px;
+  width:180px; height:180px;
   border-radius:999px;
   position:relative;
-  display:grid;
-  place-items:center;
-  background:
-    radial-gradient(circle at 50% 50%, rgba(0,0,0,.55) 0%, rgba(0,0,0,.65) 65%, rgba(0,0,0,.35) 100%);
+  display:grid; place-items:center;
+  background: radial-gradient(circle at 50% 50%, rgba(0,0,0,.55) 0%, rgba(0,0,0,.65) 65%, rgba(0,0,0,.35) 100%);
   border:1px solid rgba(255,255,255,.10);
   box-shadow:0 20px 40px rgba(0,0,0,.45), 0 0 0 1px rgba(0,255,132,.06) inset;
   overflow:hidden;
@@ -373,18 +308,8 @@ body{
   animation:spin 5.5s linear infinite;
 }
 @keyframes spin{ to{ transform:rotate(360deg); } }
-
-.ringSvg{
-  position:absolute; inset:0;
-  transform:rotate(-90deg);
-}
-.ringText{
-  position:relative;
-  text-align:center;
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-}
+.ringSvg{ position:absolute; inset:0; transform:rotate(-90deg); }
+.ringText{ position:relative; text-align:center; display:flex; flex-direction:column; gap:6px; }
 .bigTime{
   font-family:var(--mono);
   font-size:34px;
@@ -400,29 +325,13 @@ body{
   letter-spacing:.6px;
   text-transform:uppercase;
 }
-.remaining{
-  font-size:14px;
-  font-weight:900;
-  letter-spacing:.3px;
-}
-.remaining span{
-  color:var(--green);
-}
+.remaining{ font-size:14px; font-weight:900; letter-spacing:.3px; }
+.remaining span{ color:var(--green); }
 
-/* Segmented progress bar */
-.segWrap{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-.legend{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-}
+.segWrap{ display:flex; flex-direction:column; gap:10px; }
+.legend{ display:flex; gap:8px; flex-wrap:wrap; }
 .legend .pill{ padding:7px 10px; }
 .legend b{ font-family:var(--mono); }
-
 .segmentBar{
   display:grid;
   grid-template-columns:repeat(20, 1fr);
@@ -445,7 +354,6 @@ body{
   filter: drop-shadow(0 0 10px rgba(0,255,132,.18));
 }
 .segmentBar:hover .segment.on{ transform:translateY(-1px); }
-
 .hudFooter{
   margin-top:12px;
   display:flex;
@@ -458,7 +366,6 @@ body{
 }
 .hudFooter .mono{ font-family:var(--mono); }
 
-/* ================= GRID PANEL ================= */
 .panel{
   margin-top:16px;
   background:linear-gradient(180deg, rgba(13,18,22,.72), rgba(8,12,15,.66));
@@ -502,18 +409,14 @@ body{
   color:var(--text);
   padding:12px 12px;
   outline:none;
-  transition:border-color .15s, box-shadow .15s, transform .15s;
+  transition:border-color .15s, box-shadow .15s;
 }
 .input:focus{
   border-color:rgba(0,255,132,.35);
   box-shadow:0 0 0 4px rgba(0,255,132,.10);
 }
 
-.filters{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-}
+.filters{ display:flex; gap:10px; flex-wrap:wrap; }
 .chip{
   border-radius:999px;
   padding:10px 12px;
@@ -559,23 +462,14 @@ body{
   text-align:center;
   font-weight:950;
   letter-spacing:1px;
-  transition:transform .15s, box-shadow .15s, border-color .15s, background .15s, filter .15s;
+  transition:transform .15s, box-shadow .15s, border-color .15s, background .15s;
   user-select:none;
   overflow:hidden;
-}
-.cell::before{
-  content:"";
-  position:absolute;
-  inset:-60% -60%;
-  background:radial-gradient(circle at 30% 20%, rgba(255,255,255,.12), transparent 45%);
-  opacity:.15;
-  transform:translateZ(0);
 }
 .cell:hover{
   transform:translateY(-2px);
   border-color:rgba(0,255,132,.22);
   box-shadow:0 18px 40px rgba(0,0,0,.40), 0 0 0 1px rgba(0,255,132,.06) inset;
-  filter:saturate(1.1);
 }
 .cell:active{ transform:translateY(0px) scale(.99); }
 
@@ -585,8 +479,6 @@ body{
   border-color:rgba(255,59,59,.32);
   background:rgba(255,59,59,.10);
 }
-
-/* corner status notch */
 .cell .notch{
   position:absolute;
   top:0; right:0;
@@ -598,14 +490,13 @@ body{
 .cell.warn .notch{ background:rgba(255,184,77,.30); }
 .cell.bad .notch{ background:rgba(255,59,59,.35); }
 
-/* tooltip */
 .tip{
   position:absolute;
   left:50%;
   bottom:calc(100% + 10px);
   transform:translateX(-50%);
   width:max-content;
-  max-width:240px;
+  max-width:260px;
   padding:10px 10px;
   border-radius:12px;
   border:1px solid rgba(255,255,255,.10);
@@ -615,7 +506,6 @@ body{
   pointer-events:none;
   transition:opacity .12s, transform .12s;
   font-size:12px;
-  color:rgba(231,241,243,.95);
 }
 .tip .m{ color:rgba(146,166,171,.95); font-family:var(--mono); font-size:11px; }
 .cell:hover .tip{
@@ -623,7 +513,7 @@ body{
   transform:translateX(-50%) translateY(-2px);
 }
 
-/* ================= MODAL ================= */
+/* Modal */
 .modal{
   position:fixed;
   inset:0;
@@ -635,9 +525,10 @@ body{
   z-index:50;
 }
 .modal.show{display:flex}
+
 .modalBox{
   width:100%;
-  max-width:560px;
+  max-width:620px;
   border-radius:20px;
   border:1px solid rgba(255,255,255,.10);
   background:linear-gradient(180deg, rgba(14,18,22,.88), rgba(7,10,12,.82));
@@ -674,6 +565,7 @@ body{
   font-size:11px;
   color:rgba(146,166,171,.95);
 }
+
 .modalBody{
   position:relative;
   padding:14px 16px 16px;
@@ -681,15 +573,13 @@ body{
   grid-template-columns:1fr 1fr;
   gap:12px;
 }
-@media(max-width:520px){
-  .modalBody{ grid-template-columns:1fr; }
-}
+@media(max-width:560px){ .modalBody{ grid-template-columns:1fr; } }
+
 .field label{
   display:block;
   font-size:12px;
   color:rgba(146,166,171,.95);
   margin-bottom:6px;
-  letter-spacing:.2px;
 }
 .field input, .field select{
   width:100%;
@@ -699,11 +589,23 @@ body{
   background:rgba(0,0,0,.40);
   color:var(--text);
   outline:none;
-  transition:border-color .15s, box-shadow .15s;
 }
 .field input:focus, .field select:focus{
   border-color:rgba(0,255,132,.35);
   box-shadow:0 0 0 4px rgba(0,255,132,.10);
+}
+.fileHint{
+  margin-top:8px;
+  font-family:var(--mono);
+  font-size:11px;
+  color:rgba(146,166,171,.95);
+}
+.fileName{
+  margin-top:6px;
+  font-size:12px;
+  color:rgba(231,241,243,.92);
+  opacity:.9;
+  word-break:break-all;
 }
 
 .modalActions{
@@ -714,28 +616,56 @@ body{
   border-top:1px solid rgba(255,255,255,.10);
   flex-wrap:wrap;
 }
-.modalActions .btn{
-  flex:1 1 160px;
+.btn{
+  appearance:none;
+  border:1px solid rgba(255,255,255,.10);
+  background:rgba(0,0,0,.32);
+  color:var(--text);
+  padding:12px 12px;
+  border-radius:14px;
+  cursor:pointer;
+  font-weight:900;
+  letter-spacing:.3px;
+  display:inline-flex;
+  align-items:center;
   justify-content:center;
+  gap:8px;
+  transition:transform .15s, box-shadow .15s, border-color .15s;
+  user-select:none;
 }
+.btn:hover{
+  transform:translateY(-1px);
+  border-color:rgba(0,255,132,.30);
+  box-shadow:0 18px 40px rgba(0,0,0,.38), 0 0 0 1px rgba(0,255,132,.08) inset;
+}
+.btn:active{ transform:translateY(0px) scale(.99); }
+
 .btn.primary{
   background:linear-gradient(180deg, rgba(0,255,132,.95), rgba(0,180,92,.90));
   color:#04100a;
   border-color:rgba(0,255,132,.30);
 }
-.btn.primary:hover{ box-shadow:0 18px 46px rgba(0,255,132,.10), 0 22px 50px rgba(0,0,0,.40); }
-.btn.warn{
-  background:linear-gradient(180deg, rgba(255,184,77,.95), rgba(210,135,40,.92));
-  color:#1a0f02;
-  border-color:rgba(255,184,77,.28);
-}
-.btn.danger{
-  background:linear-gradient(180deg, rgba(255,59,59,.92), rgba(190,35,35,.92));
-  color:#160202;
-  border-color:rgba(255,59,59,.28);
+.btn.ghost:hover{
+  border-color:rgba(255,255,255,.18);
+  box-shadow:0 18px 40px rgba(0,0,0,.28);
 }
 
-/* Toast */
+.full{ flex:1 1 220px; }
+.small{ flex:0 0 auto; }
+
+.inlineErr{
+  display:none;
+  margin:0 16px 14px;
+  padding:10px 12px;
+  border-radius:14px;
+  border:1px solid rgba(255,59,59,.35);
+  background:rgba(255,59,59,.12);
+  color:rgba(255,230,230,.95);
+  font-family:var(--mono);
+  font-size:12px;
+}
+.inlineErr.show{ display:block; }
+
 .toast{
   position:fixed;
   bottom:18px;
@@ -758,46 +688,42 @@ body{
   opacity:1;
   transform:translateX(-50%) translateY(-2px);
 }
+
+/* Bloquea clicks en celdas no disponibles (cliente final) */
+.cell.bad, .cell.warn{ cursor:not-allowed; }
+.cell.bad:hover, .cell.warn:hover{
+  transform:none;
+  box-shadow:none;
+  border-color:inherit;
+}
 </style>
 </head>
 
 <body>
+<div class="bgPhoto"></div>
 <div class="bgFX"></div>
 <div class="noise"></div>
 
 <div class="wrap">
 
-  <!-- TOPBAR -->
   <div class="topbar">
     <div class="brand">
       <div class="badge"></div>
       <div>
-        <div class="brandTitle">SP INSTRUCTORES // SORTEO CONTROL</div>
-        <div class="brandSub">HUD v1.0 — Designed by Martin Acosta </div>
+        <div class="brandTitle">SP INSTRUCTORES // SORTEO</div>
+        <div class="brandSub">Cliente final · Reserva online (Sheets)</div>
       </div>
     </div>
 
-    <div class="actions">
-      <button class="btn" id="btnExport" title="Exporta JSON (demo)">
-        ⤓ Exportar <span class="kbd">JSON</span>
-      </button>
-      <button class="btn" id="btnImport" title="Importa JSON (demo)">
-        ⤒ Importar <span class="kbd">JSON</span>
-      </button>
-      <button class="btn danger" id="btnReset" title="Resetea todo (demo)">
-        ⟲ Reset <span class="kbd">⌘/Ctrl</span>+<span class="kbd">R</span>
-      </button>
-    </div>
+    <div class="brandSub" id="syncStatus">Sincronizando…</div>
   </div>
 
-  <!-- HEADER -->
   <div class="header">
     <div class="headerGrid">
       <div>
         <h1 class="hTitle">Sorteo SP Instructores : Tanfoglio Combat</h1>
 
         <div class="heroImages">
-          <!-- En la raíz del repo: primero el logo, después la pistola -->
           <div class="heroCard heroLogo">
             <div class="shine"></div>
             <img src="2150201.png" alt="Logo Tanfoglio">
@@ -813,21 +739,16 @@ body{
           <div class="pill"><span class="dot"></span> Disponible</div>
           <div class="pill"><span class="dot amber"></span> Reservado</div>
           <div class="pill"><span class="dot red"></span> Vendido</div>
-          <div class="pill" title="Atajos">
-            <span class="dot" style="background:rgba(255,255,255,.35); box-shadow:none"></span>
-            <span style="font-family:var(--mono)">Click número → editar • Esc → cerrar</span>
-          </div>
         </div>
       </div>
 
-      <!-- HUD -->
       <div class="hud">
         <div class="hudHeader">
           <div>
             <div class="hudTitle">ARMED COUNTDOWN</div>
-            <div class="hudHint">representación visual de cupos restantes</div>
+            <div class="hudHint">cupos restantes en tiempo real</div>
           </div>
-          <div class="hudHint" id="hudStamp">SYNC: LOCAL</div>
+          <div class="hudHint" id="hudStamp">SYNC: —</div>
         </div>
 
         <div class="hudMain">
@@ -857,20 +778,20 @@ body{
             <div class="segmentBar" id="segBar" title="20 segmentos = 100%"></div>
 
             <div class="hudFooter">
-              <div>Estado: <span class="mono" id="hudState">ARMED</span></div>
+              <div>Estado: <span class="mono" id="hudState">—</span></div>
               <div class="mono">GRILLA 00–99</div>
             </div>
           </div>
         </div>
       </div>
+
     </div>
   </div>
 
-  <!-- GRID PANEL -->
   <div class="panel">
     <div class="controls">
       <div class="search">
-        <input class="input" id="q" placeholder="Buscar por número (ej: 07) o por nombre/teléfono…" />
+        <input class="input" id="q" placeholder="Buscar por número (ej: 07) o por nombre…" />
       </div>
 
       <div class="filters" role="tablist" aria-label="Filtros">
@@ -886,40 +807,42 @@ body{
 
 </div>
 
-<!-- MODAL -->
+<!-- MODAL (CLIENTE FINAL) -->
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
   <div class="modalBox">
     <div class="modalHead">
       <div>
         <h3 class="modalTitle" id="modalTitle">Número --</h3>
-        <div class="modalSub" id="modalSub">Editar estado y datos</div>
+        <div class="modalSub" id="modalSub">Completa tus datos para reservar</div>
       </div>
-      <button class="btn" onclick="closeModal()" title="Cerrar (Esc)">✕ Cerrar <span class="kbd">Esc</span></button>
+      <button class="btn ghost small" onclick="closeModal()" title="Cerrar (Esc)">✕</button>
     </div>
+
+    <div class="inlineErr" id="errBox"></div>
 
     <div class="modalBody">
       <div class="field">
         <label>Nombre</label>
-        <input id="name" placeholder="Nombre y apellido" autocomplete="off">
+        <input id="name" placeholder="Nombre y apellido" autocomplete="name">
       </div>
       <div class="field">
         <label>Teléfono</label>
-        <input id="phone" placeholder="Ej: 11 2345 6789" autocomplete="off">
+        <input id="phone" placeholder="Ej: 11 2345 6789" autocomplete="tel">
       </div>
+
       <div class="field" style="grid-column:1 / -1">
-        <label>Estado</label>
-        <select id="status">
-          <option value="ok">Disponible</option>
-          <option value="warn">Reservado</option>
-          <option value="bad">Vendido</option>
-        </select>
+        <label>Comprobante de pago (imagen o PDF)</label>
+        <input id="receipt" type="file" accept="image/*,application/pdf">
+        <div class="fileHint">Formatos: JPG/PNG/WebP o PDF · Recomendado &lt; 6MB</div>
+        <div class="fileName" id="fileName">Ningún archivo seleccionado</div>
       </div>
     </div>
 
     <div class="modalActions">
-      <button class="btn primary" onclick="save()">Guardar</button>
-      <button class="btn warn" onclick="markReserved()">Marcar Reservado</button>
-      <button class="btn danger" onclick="markSold()">Marcar Vendido</button>
+      <button class="btn primary full" id="btnSubmit" onclick="submitReservation()">
+        Reservar y enviar comprobante
+      </button>
+      <button class="btn ghost full" onclick="closeModal()">Cancelar</button>
     </div>
   </div>
 </div>
@@ -928,73 +851,114 @@ body{
 
 <script>
 /* =========================
-   Estado + Persistencia
+   CONFIG
    ========================= */
-const LS_KEY = "sp_sorteo_state_v1";
+// 1) Pegá acá la URL del Web App de Google Apps Script (la que termina en /exec)
+const API_URL = "PASTE_YOUR_APPS_SCRIPT_WEBAPP_URL_HERE";
 
+/* =========================
+   State
+   ========================= */
 const grid = document.getElementById("grid");
+const q = document.getElementById("q");
+
 const timerEl = document.getElementById("timer");
 const remainingEl = document.getElementById("remaining");
 const ringProg = document.getElementById("ringProg");
 const segBar = document.getElementById("segBar");
-
 const cOk = document.getElementById("cOk");
 const cWarn = document.getElementById("cWarn");
 const cBad = document.getElementById("cBad");
 const hudState = document.getElementById("hudState");
 const hudStamp = document.getElementById("hudStamp");
+const syncStatus = document.getElementById("syncStatus");
 
 const modal = document.getElementById("modal");
 const modalTitle = document.getElementById("modalTitle");
 const modalSub = document.getElementById("modalSub");
+const errBox = document.getElementById("errBox");
+const fileName = document.getElementById("fileName");
+const btnSubmit = document.getElementById("btnSubmit");
 
-const q = document.getElementById("q");
-
-const btnReset = document.getElementById("btnReset");
-const btnExport = document.getElementById("btnExport");
-const btnImport = document.getElementById("btnImport");
-
-const toast = document.getElementById("toast");
-
-let state = [];
+let state = [];  // [{number, status, name, phone, receiptUrl}]
 let selected = null;
 let filter = "all";
+let loading = false;
 
 function pad2(n){ return String(n).padStart(2,"0"); }
 
 function defaultState(){
   const s = [];
   for(let i=0;i<100;i++){
-    s.push({ number: pad2(i), status:"ok", name:"", phone:"" });
+    s.push({ number: pad2(i), status:"ok", name:"", phone:"", receiptUrl:"" });
   }
   return s;
 }
 
-function load(){
-  try{
-    const raw = localStorage.getItem(LS_KEY);
-    if(!raw) return defaultState();
-    const parsed = JSON.parse(raw);
-    if(!Array.isArray(parsed) || parsed.length !== 100) return defaultState();
-    return parsed.map((x,i)=>({
-      number: pad2(i),
-      status: (x.status==="ok"||x.status==="warn"||x.status==="bad") ? x.status : "ok",
-      name: String(x.name||""),
-      phone: String(x.phone||"")
-    }));
-  }catch(e){
-    return defaultState();
-  }
+/* =========================
+   API helpers
+   ========================= */
+async function apiGetState(){
+  // GET ?action=state
+  const url = API_URL + "?action=state";
+  const res = await fetch(url, { method:"GET" });
+  if(!res.ok) throw new Error("No se pudo leer la grilla.");
+  return await res.json();
 }
 
-function persist(){
-  localStorage.setItem(LS_KEY, JSON.stringify(state));
-  hudStamp.textContent = "SYNC: LOCAL · " + new Date().toLocaleTimeString("es-AR", {hour:"2-digit", minute:"2-digit", second:"2-digit"});
+async function apiReserve(payload){
+  // POST JSON: { action:"reserve", number, name, phone, receiptName, receiptMime, receiptBase64 }
+  const res = await fetch(API_URL, {
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body: JSON.stringify(payload)
+  });
+  const data = await res.json().catch(()=> ({}));
+  if(!res.ok || !data.ok) throw new Error(data.message || "No se pudo reservar.");
+  return data;
 }
 
 /* =========================
-   HUD / Timer visual
+   UI
    ========================= */
+function showErr(msg){
+  errBox.textContent = msg;
+  errBox.classList.add("show");
+}
+function clearErr(){
+  errBox.textContent = "";
+  errBox.classList.remove("show");
+}
+let toastT=null;
+function pop(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg;
+  t.classList.add("show");
+  clearTimeout(toastT);
+  toastT=setTimeout(()=>t.classList.remove("show"), 1300);
+}
+
+function statusLabel(st){
+  if(st==="ok") return "Disponible";
+  if(st==="warn") return "Reservado";
+  return "Vendido";
+}
+
+function passesFilter(item){
+  if(filter==="all") return true;
+  return item.status === filter;
+}
+
+function matchesQuery(item, query){
+  if(!query) return true;
+  query = query.trim().toLowerCase();
+  return (
+    item.number.includes(query) ||
+    (item.name||"").toLowerCase().includes(query) ||
+    (item.phone||"").toLowerCase().includes(query)
+  );
+}
+
 function updateHud(){
   const ok = state.filter(x=>x.status==="ok").length;
   const warn = state.filter(x=>x.status==="warn").length;
@@ -1006,21 +970,18 @@ function updateHud(){
 
   remainingEl.textContent = ok;
 
-  // “Countdown” estilizado: mm:ss basado en % restante (estético, no real)
-  // 100 -> 12:00, 0 -> 00:00
+  // “Countdown” estético: 12:00 → 00:00 según % restante
   const totalSeconds = Math.round((ok/100) * 12 * 60);
   const mm = String(Math.floor(totalSeconds/60)).padStart(2,"0");
   const ss = String(totalSeconds%60).padStart(2,"0");
   timerEl.textContent = `${mm}:${ss}`;
 
-  // Ring progress
-  const CIRC = 465; // approx circumference for r=74 (2*pi*74=465)
-  const pct = ok / 100; // 0..1
+  const CIRC = 465;
+  const pct = ok / 100;
   ringProg.style.stroke = ok===0 ? "rgba(255,59,59,.85)" : ok<15 ? "rgba(255,184,77,.90)" : "rgba(0,255,132,.75)";
   ringProg.style.strokeDasharray = CIRC;
   ringProg.style.strokeDashoffset = (1 - pct) * CIRC;
 
-  // Segmented bar (20 segments = 100%)
   segBar.innerHTML = "";
   const segments = 20;
   const on = Math.round(pct * segments);
@@ -1042,30 +1003,6 @@ function updateHud(){
   }
 }
 
-/* =========================
-   Render grid + filtros
-   ========================= */
-function matchesQuery(item, query){
-  if(!query) return true;
-  query = query.trim().toLowerCase();
-  return (
-    item.number.includes(query) ||
-    (item.name||"").toLowerCase().includes(query) ||
-    (item.phone||"").toLowerCase().includes(query)
-  );
-}
-
-function passesFilter(item){
-  if(filter==="all") return true;
-  return item.status === filter;
-}
-
-function statusLabel(st){
-  if(st==="ok") return "Disponible";
-  if(st==="warn") return "Reservado";
-  return "Vendido";
-}
-
 function render(){
   grid.innerHTML = "";
 
@@ -1083,7 +1020,12 @@ function render(){
         <div class="m">${n.name ? n.name : "Sin nombre"}${n.phone ? " · " + n.phone : ""}</div>
       </div>
     `;
-    div.onclick = ()=>openModal(n.number);
+
+    // Cliente final: solo clic si está disponible
+    if(n.status === "ok"){
+      div.onclick = ()=>openModal(n.number);
+    }
+
     grid.appendChild(div);
   });
 
@@ -1091,57 +1033,151 @@ function render(){
 }
 
 /* =========================
-   Modal actions
+   Modal
    ========================= */
+document.getElementById("receipt").addEventListener("change", (e)=>{
+  const f = e.target.files && e.target.files[0];
+  fileName.textContent = f ? f.name : "Ningún archivo seleccionado";
+});
+
 function openModal(num){
+  clearErr();
   selected = state.find(n=>n.number===num);
   modalTitle.textContent = `Número ${num}`;
   modalSub.textContent = `Estado actual: ${statusLabel(selected.status)}`;
-  document.getElementById("name").value = selected.name;
-  document.getElementById("phone").value = selected.phone;
-  document.getElementById("status").value = selected.status;
+
+  document.getElementById("name").value = "";
+  document.getElementById("phone").value = "";
+  document.getElementById("receipt").value = "";
+  fileName.textContent = "Ningún archivo seleccionado";
+
   modal.classList.add("show");
 }
 
 function closeModal(){
   modal.classList.remove("show");
   selected = null;
+  clearErr();
 }
 
-function save(){
-  if(!selected) return;
-  selected.name = document.getElementById("name").value.trim();
-  selected.phone = document.getElementById("phone").value.trim();
-  selected.status = document.getElementById("status").value;
-  persist();
-  render();
-  closeModal();
-  pop("Guardado ✓");
+window.addEventListener("keydown", (e)=>{ if(e.key==="Escape") closeModal(); });
+
+/* =========================
+   Submit reservation
+   ========================= */
+function setLoading(on){
+  loading = on;
+  btnSubmit.disabled = on;
+  btnSubmit.style.opacity = on ? ".65" : "1";
+  btnSubmit.textContent = on ? "Enviando…" : "Reservar y enviar comprobante";
 }
 
-function markReserved(){
-  document.getElementById("status").value = "warn";
-  save();
+function fileToBase64(file){
+  return new Promise((resolve, reject)=>{
+    const reader = new FileReader();
+    reader.onerror = ()=>reject(new Error("No se pudo leer el archivo."));
+    reader.onload = ()=>{
+      // data:...;base64,XXXX
+      const result = String(reader.result || "");
+      const base64 = result.split(",")[1] || "";
+      resolve(base64);
+    };
+    reader.readAsDataURL(file);
+  });
 }
-function markSold(){
-  document.getElementById("status").value = "bad";
-  save();
+
+async function submitReservation(){
+  try{
+    if(!selected) return;
+
+    const name = document.getElementById("name").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const file = document.getElementById("receipt").files?.[0];
+
+    if(!name) return showErr("Falta el nombre.");
+    if(!phone) return showErr("Falta el teléfono.");
+    if(!file) return showErr("Falta adjuntar el comprobante (imagen o PDF).");
+
+    // límite práctico (Apps Script + base64)
+    if(file.size > 6 * 1024 * 1024){
+      return showErr("El archivo es muy grande. Probá con uno menor a 6MB.");
+    }
+
+    // lock UI
+    setLoading(true);
+    clearErr();
+
+    // convert
+    const receiptBase64 = await fileToBase64(file);
+
+    const payload = {
+      action: "reserve",
+      number: selected.number,
+      name,
+      phone,
+      receiptName: file.name,
+      receiptMime: file.type || "application/octet-stream",
+      receiptBase64
+    };
+
+    const res = await apiReserve(payload);
+
+    // Optimistic update local
+    selected.status = "warn";
+    selected.name = name;
+    selected.phone = phone;
+    selected.receiptUrl = res.receiptUrl || "";
+
+    hudStamp.textContent = "SYNC: " + new Date().toLocaleTimeString("es-AR", {hour:"2-digit", minute:"2-digit", second:"2-digit"});
+    pop("Reserva enviada ✓");
+    closeModal();
+    render();
+
+    // refrescar desde server para evitar colisiones
+    await refreshState();
+
+  }catch(err){
+    showErr(String(err.message || err));
+  }finally{
+    setLoading(false);
+  }
 }
 
 /* =========================
-   Toast
+   Sync
    ========================= */
-let toastT = null;
-function pop(msg){
-  toast.textContent = msg;
-  toast.classList.add("show");
-  clearTimeout(toastT);
-  toastT = setTimeout(()=>toast.classList.remove("show"), 1200);
+async function refreshState(){
+  try{
+    syncStatus.textContent = "Sincronizando…";
+    const data = await apiGetState();
+
+    // espera: { ok:true, items:[{number,status,name,phone,receiptUrl}] }
+    if(!data || !data.ok || !Array.isArray(data.items)) throw new Error("Respuesta inválida del servidor.");
+
+    // completar faltantes por seguridad
+    const map = new Map(data.items.map(x=>[x.number, x]));
+    state = defaultState().map(x=>{
+      const y = map.get(x.number);
+      if(!y) return x;
+      return {
+        number: x.number,
+        status: (y.status==="ok"||y.status==="warn"||y.status==="bad") ? y.status : "ok",
+        name: String(y.name||""),
+        phone: String(y.phone||""),
+        receiptUrl: String(y.receiptUrl||"")
+      };
+    });
+
+    syncStatus.textContent = "En línea ✓";
+    hudStamp.textContent = "SYNC: " + new Date().toLocaleTimeString("es-AR", {hour:"2-digit", minute:"2-digit", second:"2-digit"});
+    render();
+  }catch(e){
+    syncStatus.textContent = "Offline (reintentando…)";
+    // si falla, mantenemos estado local (vacío por defecto) para que no rompa
+  }
 }
 
-/* =========================
-   Filters UI
-   ========================= */
+/* Filters */
 document.querySelectorAll(".chip").forEach(ch=>{
   ch.addEventListener("click", ()=>{
     document.querySelectorAll(".chip").forEach(x=>x.classList.remove("active"));
@@ -1150,69 +1186,14 @@ document.querySelectorAll(".chip").forEach(ch=>{
     render();
   });
 });
-
 q.addEventListener("input", ()=>render());
 
-/* Esc para cerrar modal */
-window.addEventListener("keydown", (e)=>{
-  if(e.key === "Escape") closeModal();
-});
-
-/* =========================
-   Export / Import / Reset
-   ========================= */
-btnReset.addEventListener("click", ()=>{
-  if(confirm("¿Resetear toda la grilla (00–99) a Disponible?")){
-    state = defaultState();
-    persist();
-    render();
-    pop("Reset OK");
-  }
-});
-
-btnExport.addEventListener("click", ()=>{
-  const blob = new Blob([JSON.stringify(state, null, 2)], {type:"application/json"});
-  const a = document.createElement("a");
-  a.href = URL.createObjectURL(blob);
-  a.download = "sorteo_state.json";
-  a.click();
-  URL.revokeObjectURL(a.href);
-  pop("Exportado");
-});
-
-btnImport.addEventListener("click", async ()=>{
-  const input = document.createElement("input");
-  input.type = "file";
-  input.accept = "application/json";
-  input.onchange = async () => {
-    const file = input.files?.[0];
-    if(!file) return;
-    try{
-      const text = await file.text();
-      const parsed = JSON.parse(text);
-      if(!Array.isArray(parsed) || parsed.length !== 100) throw new Error("Formato inválido");
-      state = parsed.map((x,i)=>({
-        number: pad2(i),
-        status: (x.status==="ok"||x.status==="warn"||x.status==="bad") ? x.status : "ok",
-        name: String(x.name||""),
-        phone: String(x.phone||"")
-      }));
-      persist();
-      render();
-      pop("Importado ✓");
-    }catch(err){
-      alert("No pude importar ese JSON. Asegurate que sea un array de 100 items.");
-    }
-  };
-  input.click();
-});
-
-/* =========================
-   Init
-   ========================= */
-state = load();
-persist();
+/* Init */
+state = defaultState();
 render();
+refreshState();
+// re-sync cada 10s
+setInterval(refreshState, 10000);
 </script>
 
 </body>
